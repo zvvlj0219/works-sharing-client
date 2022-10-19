@@ -9,6 +9,7 @@ import { getPortfolios } from '../helpers/getPortfolios'
 import { getImageBinaryData } from '../helpers/getImageBinaryData'
 import { ObjectId } from 'mongoose'
 import { InferGetStaticPropsType } from 'next'
+import portfolioSchema from '../models/Portfoilo'
 
 interface Image {
     _id: ObjectId

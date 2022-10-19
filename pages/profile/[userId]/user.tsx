@@ -6,8 +6,9 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useEffect, useRef } from 'react'
 
-const UploadPortfolio = () => {
-    return (<Layout>this is UploadPortfolio</Layout>)
+
+const UserProfile = () => {
+    return (<Layout>this is UserProfile</Layout>)
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
@@ -28,4 +29,5 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
 }
 
-export default UploadPortfolio
+
+export default UserProfile

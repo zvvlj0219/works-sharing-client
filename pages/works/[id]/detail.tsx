@@ -54,6 +54,8 @@ export const getServerSideProps = async (
         }
     }
 
+    await db.connect()
+
     const portfolioDocument = await portfolioSchema.findById(params.id).lean()
 
     if (!portfolioDocument) {
@@ -68,6 +70,8 @@ export const getServerSideProps = async (
     const portfolio = db.convertDocToObj(portfolioDocument) as Portfolio
 
     const imageObj = await getImageBinaryData(portfolio.image.name, params.id)
+
+    await db.disconnect()
 
     return {
         props: {
