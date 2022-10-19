@@ -15,7 +15,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "@components/*": ["./components/*"]
+      "@components/*": ["./components/*"],
+      "@models/*": ["./models/*"],
+      "@types/*": ["./types/*"],
+      "@config/*": ["./config/*"],
+      "@helpers/*": ["./helpers/*"]
     },
     "resolveJsonModule": true,
     "isolatedModules": true,

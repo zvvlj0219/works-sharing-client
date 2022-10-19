@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import Layout from '@components/Layout'
 import fetch from 'node-fetch'
 import { baseUrl } from '../config'
@@ -6,7 +8,7 @@ import type { BucketFile, Portfolio } from '../types'
 import { getPortfolios } from '../helpers/getPortfolios'
 import { getImageBinaryData } from '../helpers/getImageBinaryData'
 import { ObjectId } from 'mongoose'
-import { InferGetStaticPropsType, GetStaticPaths} from 'next'
+import { InferGetStaticPropsType } from 'next'
 
 interface Image {
     _id: ObjectId
@@ -15,12 +17,34 @@ interface Image {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
-const Home = ({ portfolios, imageUrlArray}: Props) => {
-    console.log(portfolios)
+const Home = ({ portfolioList, imageUrlArray }: Props) => {
+    console.log(portfolioList)
     console.log(imageUrlArray)
+
+    const Router = useRouter()
+
+    const onClickhandler = (_id: ObjectId) => {
+        Router.push(`/works/${_id}/detail`)
+    }
+
     return (
         <Layout>
-            this is Home
+            <div>
+                {portfolioList.map((portfolio: Portfolio) => (
+                    <div
+                        style={{
+                            width: '300px',
+                            height: '200px',
+                            border: '1px solid black'
+                        }}
+                        key={String(portfolio._id)}
+                        onClick={() => onClickhandler(portfolio._id)}
+                    >
+                        <p>{portfolio.work_name}</p>
+                        <p>{portfolio.work_url}</p>
+                    </div>
+                ))}
+            </div>
         </Layout>
     )
 }
@@ -28,24 +52,30 @@ const Home = ({ portfolios, imageUrlArray}: Props) => {
 export const getStaticProps = async () => {
     await db.connect()
 
-    const portfolios = await getPortfolios()
+    const portfolioDocuments = await getPortfolios()
 
-    const mapResult = portfolios.map((work: Portfolio) => {
-        return getImageBinaryData(work.image.name , work._id)
+    const portfolioList = portfolioDocuments
+        ? (portfolioDocuments.map((doc: Portfolio) => {
+              return db.convertDocToObj(doc)
+          }) as Portfolio[])
+        : []
+
+    const mapResult = portfolioList.map((work: Portfolio) => {
+        return getImageBinaryData(work.image.name, work._id)
     })
 
     const getImageUrl = async () => {
-        const image = await Promise.all(mapResult)
-        return image
+        const imageObj = await Promise.all(mapResult)
+        return imageObj
     }
 
     const imageUrlArray = await getImageUrl()
-    
+
     await db.disconnect()
 
     return {
         props: {
-            portfolios,
+            portfolioList,
             imageUrlArray
         }
     }
