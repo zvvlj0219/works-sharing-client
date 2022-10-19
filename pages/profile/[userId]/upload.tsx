@@ -1,11 +1,7 @@
-import Layout from "@components/Layout"
+import Layout from '@components/Layout'
 
 const UploadPortfolio = () => {
-    return (
-        <Layout>
-            this is UploadPortfolio
-        </Layout>
-    )
+    return <Layout>this is UploadPortfolio</Layout>
 }
 
 export default UploadPortfolio

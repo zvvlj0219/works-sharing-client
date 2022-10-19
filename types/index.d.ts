@@ -40,3 +40,9 @@ type Portfolio = {
     like: number
     dislike: number
 }
+
+type Review = {
+    username: string
+    star: number
+    text: string
+}
