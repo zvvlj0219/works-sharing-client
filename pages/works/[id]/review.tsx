@@ -83,6 +83,8 @@ export const getStaticProps = async (
         }
     }
 
+    await db.connect()
+
     const portfolioDocument = await portfolioSchema.findById(params.id).lean()
 
     if (!portfolioDocument) {
@@ -97,6 +99,8 @@ export const getStaticProps = async (
     const portfolio = db.convertDocToObj(portfolioDocument) as Portfolio
 
     const imageObj = await getImageBinaryData(portfolio.image.name, params.id)
+
+    await db.disconnect()
 
     return {
         props: {
