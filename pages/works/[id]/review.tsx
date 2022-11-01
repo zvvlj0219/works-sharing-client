@@ -1,84 +1,141 @@
 import Layout from '@components/Layout'
-import { ObjectId } from 'mongoose'
-import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+import mongoose, { ObjectId }  from 'mongoose'
+import { GetServerSidePropsContext, InferGetStaticPropsType } from 'next'
 import portfolioSchema from '@models/Portfoilo'
 import db from '../../../config/db'
-import type { Portfolio } from '../../../types'
+import type { Portfolio, Review } from '../../../types'
 import { getImageBinaryData } from '../../../helpers/getImageBinaryData'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
+import {baseUrl} from '../../../config'
+import TextareaField from '../../../components/textarea/TextareaField'
+import { useSession, signOut, getSession  } from 'next-auth/react'
 
-interface Image {
-    id: string | ObjectId
-    url: string
+type Props = {
+    portfolio: {
+        image_preview_url: string;
+        _id: mongoose.Schema.Types.ObjectId;
+        image: {
+            name: string;
+        };
+        username: string;
+        review: Review[];
+        work_url: string;
+        work_name: string;
+        description: string;
+        review_avg: number;
+        like: number;
+        dislike: number;
+    } | undefined
 }
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>
+const UploadReview = ({ portfolio }: Props) => {
+    const { data: session, status } = useSession()
 
-const UploadReview = ({ portfolio, imageObj }: Props) => {
+    console.log(session)
+    console.log(status)
+
     const Router = useRouter()
 
-    console.log(portfolio)
-    console.log(imageObj)
+    const [reviewStar, setReviewStar] = useState<number>(3)
 
     useEffect(() => {
-        if (!portfolio) {
+        if (!portfolio || (!session && status === 'unauthenticated')) {
             Router.push('/404')
         }
+    }, [portfolio, session, status])
+
+    const onChangeHandler = useCallback((e:React.ChangeEvent<HTMLTextAreaElement>) => {
+        if(!e.target.value) return
+
+        setReviewText(e.target.value)
     }, [])
 
-    const [imageSrc, setImageSrc] = useState<Image | null>(imageObj)
+    const selectStar = (): void => {
+        // review_avgを計算する処理
+        // setreviewStar
+    }
+
+    const uploadReview = async () => {
+        if(!portfolio || !session) return
+
+        const newReview = {
+            username: session.user?.name,
+            text: reviewText,
+            star: reviewStar
+        }   
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newReview)
+        }
+
+        await fetch(`${baseUrl}/review/${portfolio._id}`, options)
+
+        Router.push(`/works/${portfolio._id}/detail`)
+    }
+
+    const [reviewText, setReviewText] = useState<string>('')
 
     return (
         <Layout>
             this is UploadReview
-            <p>workname {portfolio?.work_name}</p>
-            <img
-                src={imageSrc?.url}
-                alt=""
-                style={{ width: '150px', height: 'auto', display: 'block' }}
-            />
+            {
+                portfolio ? (
+                    <>
+                        <p>workname {portfolio.work_name}</p>
+                        <img
+                            src={portfolio.image_preview_url}
+                            alt=""
+                            style={{ width: '150px', height: 'auto', display: 'block' }}
+                        />
+                        <p>レビュー内容</p>
+                        <TextareaField
+                            field_height={200}
+                            field_width={300}
+                            value={reviewText}
+                            onChange={onChangeHandler}
+                        />
+                        <button
+                            type='button'
+                            onClick={() => uploadReview()}
+                        >
+                            レビューする
+                        </button>
+                    </>
+                ) : (
+                    <p>読み込めませんでした</p>
+                )
+            }
         </Layout>
     )
 }
 
-export const getStaticPaths = async () => {
-    await db.connect()
+export const getServerSideProps = async (
+    ctx: GetServerSidePropsContext<{ id: string }>
+) => {
+    const { 
+        params,
+        req
+    } = ctx
 
-    const portfolioDocuments = await portfolioSchema.find().lean()
+    const session = await getSession({ req })
 
-    const portfolioList = portfolioDocuments
-        ? (portfolioDocuments.map((doc: Portfolio) => {
-              return db.convertDocToObj(doc)
-          }) as Portfolio[])
-        : []
-
-    const paths = portfolioList.map((work: Portfolio) => {
+    if (!session) {
         return {
-            params: {
-                id: work._id
+            redirect: {
+                destination: '/auth/login'
             }
         }
-    })
-
-    await db.disconnect()
-
-    return {
-        paths,
-        fallback: false
     }
-}
 
-export const getStaticProps = async (
-    ctx: GetStaticPropsContext<{ id: string }>
-) => {
-    const { params } = ctx
-
-    if (!params) {
+    if(!params){
         return {
             props: {
-                portfolio: null,
-                imageObj: null
+                portfolio: undefined
             }
         }
     }
@@ -87,27 +144,23 @@ export const getStaticProps = async (
 
     const portfolioDocument = await portfolioSchema.findById(params.id).lean()
 
-    if (!portfolioDocument) {
-        return {
-            props: {
-                portfolio: null,
-                imageObj: null
-            }
-        }
-    }
+    const convertedPortfolio = db.convertDocToObj(portfolioDocument) as Portfolio
 
-    const portfolio = db.convertDocToObj(portfolioDocument) as Portfolio
-
-    const imageObj = await getImageBinaryData(portfolio.image.name, params.id)
+    const imageObj = await getImageBinaryData(convertedPortfolio.image.name, params.id)
 
     await db.disconnect()
 
+    const portfolio = {
+        ...convertedPortfolio,
+        image_preview_url: imageObj.image_preview_url
+    }
+
     return {
         props: {
-            portfolio,
-            imageObj
+            portfolio
         }
     }
 }
+
 
 export default UploadReview

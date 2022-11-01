@@ -29,8 +29,8 @@ export default NextAuth({
         async signIn({
             user, account, profile
         }: SignInParams): Promise<boolean | string> {
-            console.log("===signIn===");
-            console.log(account)
+            // console.log("===signIn===");
+            // console.log(account)
             return true;
         },
         /**
@@ -44,9 +44,9 @@ export default NextAuth({
         async jwt({
             token, user, account, profile, isNewUser
         }: JWTParams): Promise<JWT> {
-          console.log("===jwt===");
-          console.log(account)
-          console.log(token)
+        //   console.log("===jwt===");
+        //   console.log(account)
+        //   console.log(token)
           // Add access_token to the token "right after signin"
           if (account) {
             token.accessToken = account.access_token

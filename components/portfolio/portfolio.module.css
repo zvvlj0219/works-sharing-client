@@ -1,0 +1,289 @@
+.ptf_container {
+    width: 600px;
+    height: 430px;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.ptf_image_wrapper {
+    width: 500px;
+    height: 300px;
+    margin: 10px auto 5px;
+    border: 1px solid gray;
+}
+
+.ptf_image_core {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    display: block;
+}
+
+.ptf_workname_wrapper {
+    margin-left: 20px;
+}
+
+.ptf_workname_core {
+    font-weight: bold;
+    font-size: 1.7rem;
+    margin: 0;
+}
+
+.ptf_username_wrapper {
+    margin-left: 25px;
+}
+
+.ptf_username_core {
+    margin: 5px;
+}
+
+.ptf_star_wrapper {
+    margin-left: 20px;
+    height: 25px;
+}
+
+.ptf_star_core {
+    width: 30px;
+    height: 25px;
+    line-height: 25px;
+    display: block;
+    text-align: center;
+}
+
+.ptf_star_reviewavg {
+    min-width: 25px;
+    max-width: 100px;
+    line-height: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+/* pc 950px~ */
+/* tablet 500px~ 950px */
+/* large phone 350px ~ 500px */
+/* small phone(gallay fold) ~ 350px */
+
+@media (min-width: 950px) {
+    .ptf_star_wrapper {
+        margin-left: 20px;
+        height: 25px;
+    }
+    
+    .ptf_star_core {
+        width: 30px;
+        height: 25px;
+        line-height: 25px;
+        display: block;
+        text-align: center;
+    }
+    
+    .ptf_star_reviewavg {
+        min-width: 25px;
+        max-width: 100px;
+        line-height: 25px;
+        height: 25px;
+        text-align: center;
+        padding-top: 2px;
+    }
+    
+}
+
+@media (min-width:501px) and (max-width:950px) {
+    .ptf_container {
+        width: 460px;
+        height: 370px;
+        margin: 0 auto;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+    
+    .ptf_image_wrapper {
+        width: 400px;
+        height: 250px;
+        margin: 10px auto 5px;
+        border: 1px solid gray;
+    }
+    
+    .ptf_image_core {
+        width: 100%;
+        height: 250px;
+        object-fit: contain;
+        display: block;
+    }
+    
+    .ptf_workname_wrapper {
+        margin-left: 15px;
+    }
+    
+    .ptf_workname_core {
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    
+    .ptf_username_wrapper {
+        margin-left: 20px;
+    }
+    
+    .ptf_username_core {
+        margin: 3px 0 7px;
+    }
+    
+    .ptf_star_wrapper {
+        margin-left: 20px;
+    }
+    
+    .ptf_star_core {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        display: block;
+        text-align: center;
+    }
+    
+    .ptf_star_reviewavg {
+        min-width: 25px;
+        max-width: 100px;
+        line-height: 25px;
+        height: 25px;
+        text-align: center;
+        padding-top: 2px;
+    }
+}
+
+@media (min-width:350px) and (max-width:500px) {
+    .ptf_container {
+        width: 100%;
+        height: 370px;
+        margin: 0 auto;
+        border: none;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        box-sizing: border-box;
+        border-radius: 0px;
+    }
+    
+    .ptf_image_wrapper {
+        width: 85%;
+        height: 250px;
+        margin: 10px auto 5px;
+        border: 1px solid gray;
+    }
+    
+    .ptf_image_core {
+        width: 100%;
+        height: 250px;
+        object-fit: contain;
+        display: block;
+    }
+    
+    .ptf_workname_wrapper {
+        margin-left: 15px;
+    }
+    
+    .ptf_workname_core {
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    
+    .ptf_username_wrapper {
+        margin-left: 20px;
+    }
+    
+    .ptf_username_core {
+        margin: 3px 0 7px;
+    }
+    
+    .ptf_star_wrapper {
+        margin-left: 20px;
+    }
+    
+    .ptf_star_core {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        display: block;
+        text-align: center;
+    }
+    
+    .ptf_star_reviewavg {
+        min-width: 25px;
+        max-width: 100px;
+        line-height: 25px;
+        height: 25px;
+        text-align: center;
+        padding-top: 1px;
+    }
+}
+
+@media (max-width:350px) {
+    .ptf_container {
+        width: 100%;
+        height: 250px;
+        margin: 0 auto;
+        border: none;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        box-sizing: border-box;
+        border-radius: 0px;
+    }
+    
+    .ptf_image_wrapper {
+        width: 85%;
+        height: 150px;
+        margin: 10px auto 5px;
+        border: 1px solid gray;
+    }
+    
+    .ptf_image_core {
+        width: 100%;
+        height: 150px;
+        object-fit: contain;
+        display: block;
+    }
+    
+    .ptf_workname_wrapper {
+        margin-left: 10px;
+    }
+    
+    .ptf_workname_core {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    
+    .ptf_username_wrapper {
+        margin-left: 15px;
+    }
+    
+    .ptf_username_core {
+        margin: 3px 0 0;
+    }
+    
+    .ptf_star_wrapper {
+        margin-left: 5px;
+    }
+    
+    .ptf_star_core {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        display: block;
+        text-align: center;
+    }
+    
+    .ptf_star_reviewavg {
+        min-width: 25px;
+        max-width: 100px;
+        line-height: 25px;
+        height: 25px;
+        text-align: center;
+        margin-left: 2px;
+        padding-top: 1px;
+    }
+}
