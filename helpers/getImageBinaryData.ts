@@ -14,7 +14,7 @@ export const getImageBinaryData = async (
     const res = await fetch(`${baseUrl}/home/fetch/${filename}`)
 
     return {
-        id: _id,
-        url: res.url
+        _id,
+        image_preview_url: res.url
     }
 }

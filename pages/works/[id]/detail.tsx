@@ -1,5 +1,5 @@
 import Layout from '@components/Layout'
-import { ObjectId } from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 import { GetServerSidePropsContext } from 'next'
 import portfolioSchema from '@models/Portfoilo'
 import db from '../../../config/db'
@@ -8,34 +8,53 @@ import { InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getImageBinaryData } from '../../../helpers/getImageBinaryData'
-
-interface Image {
-    id: string | ObjectId
-    url: string
-}
+import Link from 'next/link'
+import type {Review} from '../../../types'
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const PortfolioDetail = ({ portfolio, imageObj }: Props) => {
+const PortfolioDetail = ({portfolio}: Props) => {
     const Router = useRouter()
-
-    const [imageSrc, setImageSrc] = useState<Image | null>(imageObj)
 
     useEffect(() => {
         if (!portfolio) {
             Router.push('/404')
         }
-    }, [])
+    }, [portfolio])
 
     return (
         <Layout>
             this is PortfolioDetail
-            <p>workname = {portfolio?.work_name}</p>
-            <img
-                src={imageSrc?.url}
-                alt=""
-                style={{ width: '150px', height: 'auto', display: 'block' }}
-            />
+            {
+                portfolio ? (
+                    <>
+                        <p>workname = {portfolio.work_name}</p>
+                        <img
+                            src={portfolio.image_preview_url}
+                            alt=""
+                            style={{ width: '150px', height: 'auto', display: 'block' }}
+                        />
+                        <Link href={`/works/${String(portfolio._id)}/review`}>
+                            <a>
+                                reviewを書く
+                            </a>
+                        </Link>
+                        <div className='review list'>
+                            {
+                                portfolio.review.map((rev:Review) => (
+                                    <div key={String(rev._id)}>
+                                        <div>星{rev.star}</div>
+                                        <div>名前:{rev.username}</div>
+                                        <div>内容:{rev.text}</div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </>
+                ) : (
+                    <p>読み込めませんでした</p>
+                )
+            }
         </Layout>
     )
 }
@@ -45,11 +64,10 @@ export const getServerSideProps = async (
 ) => {
     const { params } = ctx
 
-    if (!params) {
+    if(!params){
         return {
             props: {
-                portfolio: null,
-                imageObj: null
+                portfolio: undefined
             }
         }
     }
@@ -58,25 +76,20 @@ export const getServerSideProps = async (
 
     const portfolioDocument = await portfolioSchema.findById(params.id).lean()
 
-    if (!portfolioDocument) {
-        return {
-            props: {
-                portfolio: null,
-                imageObj: null
-            }
-        }
-    }
+    const convertedPortfolio = db.convertDocToObj(portfolioDocument) as Portfolio
 
-    const portfolio = db.convertDocToObj(portfolioDocument) as Portfolio
-
-    const imageObj = await getImageBinaryData(portfolio.image.name, params.id)
+    const imageObj = await getImageBinaryData(convertedPortfolio.image.name, params.id)
 
     await db.disconnect()
 
+    const portfolio = {
+        ...convertedPortfolio,
+        image_preview_url: imageObj.image_preview_url
+    }
+
     return {
         props: {
-            portfolio,
-            imageObj
+            portfolio
         }
     }
 }

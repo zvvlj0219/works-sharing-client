@@ -27,7 +27,6 @@ export type UploadFile = {
 
 type Portfolio = {
     _id: ObjectId
-    // image: File
     image: {
         name: string
     }
@@ -42,6 +41,7 @@ type Portfolio = {
 }
 
 type Review = {
+    _id: ObjectId
     username: string
     star: number
     text: string
