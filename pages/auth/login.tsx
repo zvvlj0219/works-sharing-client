@@ -1,8 +1,6 @@
-import { signIn, getProviders, getSession, getCsrfToken } from "next-auth/react";
-import type { GetServerSidePropsContext} from 'next'
-import Layout from "../../components/Layout";
-import { useRouter } from 'next/router'
-import { client_baseUrl} from '../../config'
+import { signIn, getProviders } from "next-auth/react";
+import Layout from "@components/Layout";
+import { client_baseUrl} from '@config/index'
 
 
 type Providers = {
@@ -51,7 +49,7 @@ const Login = ({ providers }: Providers) => {
     )
 }
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps = async () => {
     const providers = await getProviders()
 
     return {

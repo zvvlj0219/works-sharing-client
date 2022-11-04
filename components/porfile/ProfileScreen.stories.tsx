@@ -14,7 +14,7 @@ const Template: ComponentStory<typeof ProfileScreen> = (args) => {
 
 export const Primary = Template.bind({})
 Primary.args = {
-    image_url: String(girl),
+    use_image_url: String(girl),
     username: 'John Doe',
 }
 Primary.play = async ({}) => {

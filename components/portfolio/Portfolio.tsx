@@ -12,8 +12,6 @@ type PortfolioProps = {
 }
 
 const PortfolioContainer = (portfolio: PortfolioProps) => {
-    // const { resizeSmallIcon } = useResizeIcon()
-
     return (
         <div
             className={styles.ptf_container}

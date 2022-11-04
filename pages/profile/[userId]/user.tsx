@@ -1,18 +1,14 @@
-import Layout from '@components/Layout'
-import { signIn, getProviders, getSession, getCsrfToken } from "next-auth/react";
 import type { GetServerSidePropsContext} from 'next'
-import ProfileScreen from '../../../components/porfile/ProfileScreen'
-import portfolioSchema from '@models/Portfoilo'
-import type { Portfolio, Review } from '../../../types'
-import { getImageBinaryData } from '../../../helpers/getImageBinaryData'
+import { useEffect } from 'react'
 import { ObjectId } from 'mongoose'
-import PortfolioContainer from '@components/portfolio/Portfolio'
-
-
-
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
-import { useEffect, useRef } from 'react'
+import { useSession, getSession } from 'next-auth/react'
+import Layout from '@components/Layout'
+import ProfileScreen from '@components/porfile/ProfileScreen'
+import portfolioSchema from '@models/Portfoilo'
+import type { Portfolio } from '../../../types'
+import { getImageBinaryData } from '@helpers/getImageBinaryData'
+import PortfolioContainer from '@components/portfolio/Portfolio'
 import db from '@config/db';
 
 interface Image {
@@ -31,11 +27,6 @@ const UserProfile = ({
     const { data: session, status } = useSession()
     const Router = useRouter()
 
-    console.log(session)
-    console.log(status)
-
-    console.log(portfolioList)
-
     useEffect(() => {
         if(!session && status !== 'loading') {
             Router.push('/auth/login')
@@ -45,7 +36,6 @@ const UserProfile = ({
     const onClickhandler = (_id: ObjectId) => {
         Router.push(`/works/${_id}/detail`)
     }
-
 
     return (
         <Layout>

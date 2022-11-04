@@ -1,8 +1,6 @@
-import NextAuth, { Session } from "next-auth";
-import { JWT } from "next-auth/jwt";
-import GithubProvider from "next-auth/providers/github"
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google"
-import type { SignInParams, JWTParams, SessionParams, RedirectParams } from "../../../types/next-auth";
+import type { RedirectParams } from "../../../types/next-auth";
 
 export default NextAuth({
     // Configure one or more authentication providers
@@ -26,12 +24,8 @@ export default NextAuth({
          *                           Return `false` to deny access
          *                           Return `string` to redirect to (eg.: "/unauthorized")
          */
-        async signIn({
-            user, account, profile
-        }: SignInParams): Promise<boolean | string> {
-            // console.log("===signIn===");
-            // console.log(account)
-            return true;
+        async signIn() {
+            return true
         },
         /**
          * @param  {object}  token     Decrypted JSON Web Token
@@ -42,11 +36,8 @@ export default NextAuth({
          * @return {object}            JSON Web Token that will be saved
          */
         async jwt({
-            token, user, account, profile, isNewUser
-        }: JWTParams): Promise<JWT> {
-        //   console.log("===jwt===");
-        //   console.log(account)
-        //   console.log(token)
+            token, account
+        }) {
           // Add access_token to the token "right after signin"
           if (account) {
             token.accessToken = account.access_token

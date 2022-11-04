@@ -1,33 +1,25 @@
 import styles from './header.module.css'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useSession, signOut, getSession  } from 'next-auth/react'
-import { GetServerSidePropsContext } from 'next'
-
-type HeaderProps = {
-    user_image_url?: string
-    username?: string
-}
+import { useSession, signOut} from 'next-auth/react'
 
 const Header = () => {
     const { data: session, status } = useSession()
+    const Router = useRouter()
 
     console.log(session)
     console.log(status)
 
-    const Router = useRouter()
     const [isAuth, setIsAuht] = useState<boolean>(false)
     const [isShow, setIsShow] = useState<boolean>(false)
 
     const onClickHandler = () => {
-        console.log('call')
         setIsShow(!isShow)
     }
 
     const pushLoginScreen = () => {
         Router.push('/auth/login')
 
-        // setIsAuht(true)
         setIsShow(false)
     }
 
@@ -41,7 +33,7 @@ const Header = () => {
 
     const logout = () => {
         signOut()
-        // setIsAuht(false)
+
         setIsShow(false)
     }
 

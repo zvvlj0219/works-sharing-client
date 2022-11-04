@@ -8,8 +8,8 @@ export default {
     components: HeaderContainer
 } as ComponentMeta<typeof HeaderContainer>
 
-const Template: ComponentStory<typeof HeaderContainer> = (args) => {
-    return <HeaderContainer {...args} />
+const Template: ComponentStory<typeof HeaderContainer> = () => {
+    return <HeaderContainer />
 }
 export const Primary = Template.bind({})
 Primary.args = {

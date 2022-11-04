@@ -1,16 +1,12 @@
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import Layout from '@components/Layout'
-import fetch from 'node-fetch'
-import { baseUrl } from '../config'
-import db from '../config/db'
-import type { BucketFile, Portfolio } from '../types'
-import { getPortfolios } from '../helpers/getPortfolios'
-import { getImageBinaryData } from '../helpers/getImageBinaryData'
 import { ObjectId } from 'mongoose'
 import { InferGetStaticPropsType } from 'next'
-import portfolioSchema from '../models/Portfoilo'
+import { useRouter } from 'next/router'
+import type { Portfolio } from '../types'
+import Layout from '@components/Layout'
+import { getPortfolios } from '@helpers/getPortfolios'
+import { getImageBinaryData } from '@helpers/getImageBinaryData'
 import PortfolioContainer from '@components/portfolio/Portfolio'
+import db from '@config/db'
 
 interface Image {
     _id: ObjectId
@@ -20,8 +16,6 @@ interface Image {
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 const Home = ({ portfolioList }: Props) => {
-    console.log(portfolioList)
-
     const Router = useRouter()
 
     const onClickhandler = (_id: ObjectId) => {
