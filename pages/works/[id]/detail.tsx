@@ -1,20 +1,82 @@
-import Layout from '@components/Layout'
-import mongoose, { ObjectId } from 'mongoose'
 import { GetServerSidePropsContext } from 'next'
-import portfolioSchema from '@models/Portfoilo'
-import db from '../../../config/db'
-import type { Portfolio } from '../../../types'
-import { InferGetServerSidePropsType } from 'next'
-import { useRouter } from 'next/router'
+import mongoose from 'mongoose'
 import { useEffect, useState } from 'react'
-import { getImageBinaryData } from '../../../helpers/getImageBinaryData'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import portfolioSchema from '@models/Portfoilo'
+import Layout from '@components/Layout'
+import db from '@config/db'
+import type { Portfolio } from '../../../types'
+import { getImageBinaryData } from '@helpers/getImageBinaryData'
 import type {Review} from '../../../types'
+import { baseUrl } from '@config/index'
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+type Props = {
+    portfolio: {
+        image_preview_url: string;
+        _id: mongoose.Schema.Types.ObjectId;
+        image: {
+            name: string;
+        };
+        username: string;
+        review: Review[];
+        work_url: string;
+        work_name: string;
+        description: string;
+        review_avg: number;
+        like: number;
+        dislike: number;
+    } | undefined
+}
 
 const PortfolioDetail = ({portfolio}: Props) => {
+    const [_portfolio, setPortfolio] = useState<Props['portfolio']>(portfolio)
+
     const Router = useRouter()
+
+    const pushLikeButton = async () => {
+        if(!portfolio) return
+        const _newLike = {
+            newlikeCount: portfolio.like + 1
+        }
+
+        const res = await fetch(`${baseUrl}/review/like/${portfolio._id}`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(_newLike)
+        })
+        const {result } = await res.json() as { result : Portfolio}
+        if(_portfolio) {
+            setPortfolio({
+                ..._portfolio,
+                like: result.like
+            })
+        }
+    }
+
+    const pushDislikeButton = async () => {
+        if(!portfolio) return
+        const _newDislike = {
+            newdislikeCount: portfolio.dislike + 1
+        }
+        const res = await fetch(`${baseUrl}/review/dislike/${portfolio._id}`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(_newDislike)
+        })
+        const {result } = await res.json() as { result : Portfolio}
+        if(_portfolio) {
+            setPortfolio({
+                ..._portfolio,
+                dislike: result.dislike
+            })
+        }
+        console.log(result)
+    }
 
     useEffect(() => {
         if (!portfolio) {
@@ -26,23 +88,30 @@ const PortfolioDetail = ({portfolio}: Props) => {
         <Layout>
             this is PortfolioDetail
             {
-                portfolio ? (
+                _portfolio ? (
                     <>
-                        <p>workname = {portfolio.work_name}</p>
+                        <p>workname = {_portfolio.work_name}</p>
                         <img
-                            src={portfolio.image_preview_url}
+                            src={_portfolio.image_preview_url}
                             alt=""
                             style={{ width: '150px', height: 'auto', display: 'block' }}
                         />
-                        <Link href={`/works/${String(portfolio._id)}/review`}>
+                        <hr />
+                        <div>
+                            <p>like dislike</p>
+                            <p onClick={() => pushLikeButton()}>いいね:{_portfolio.like}</p>
+                            <p onClick={() => pushDislikeButton()}>いまいち:{_portfolio.dislike}</p>
+                        </div>
+                        <hr />
+                        <Link href={`/works/${String(_portfolio._id)}/review`}>
                             <a>
                                 reviewを書く
                             </a>
                         </Link>
                         <div className='review list'>
                             {
-                                portfolio.review.map((rev:Review) => (
-                                    <div key={String(rev._id)}>
+                                _portfolio.review.map((rev:Review) => (
+                                    <div key={String(rev.createdAt)}>
                                         <div>星{rev.star}</div>
                                         <div>名前:{rev.username}</div>
                                         <div>内容:{rev.text}</div>

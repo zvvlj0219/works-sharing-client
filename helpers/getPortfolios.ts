@@ -8,6 +8,5 @@ import type { Portfolio } from '../types'
 export const getPortfolios = async () => {
     const res = await fetch(`${baseUrl}/home`)
     const { portfolios } = (await res.json()) as { portfolios: Portfolio[] }
-
     return portfolios
 }

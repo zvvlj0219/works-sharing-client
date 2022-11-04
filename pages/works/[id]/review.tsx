@@ -1,15 +1,15 @@
 import Layout from '@components/Layout'
-import mongoose, { ObjectId }  from 'mongoose'
-import { GetServerSidePropsContext, InferGetStaticPropsType } from 'next'
+import mongoose  from 'mongoose'
+import { GetServerSidePropsContext} from 'next'
 import portfolioSchema from '@models/Portfoilo'
-import db from '../../../config/db'
+import db from '@config/db'
 import type { Portfolio, Review } from '../../../types'
-import { getImageBinaryData } from '../../../helpers/getImageBinaryData'
+import { getImageBinaryData } from '@helpers/getImageBinaryData'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState, useCallback } from 'react'
-import {baseUrl} from '../../../config'
-import TextareaField from '../../../components/textarea/TextareaField'
-import { useSession, signOut, getSession  } from 'next-auth/react'
+import {baseUrl} from '@config/index'
+import TextareaField from '@components/textarea/TextareaField'
+import { useSession, getSession  } from 'next-auth/react'
 
 type Props = {
     portfolio: {
@@ -51,18 +51,23 @@ const UploadReview = ({ portfolio }: Props) => {
         setReviewText(e.target.value)
     }, [])
 
-    const selectStar = (): void => {
-        // review_avgを計算する処理
-        // setreviewStar
+    const selectStar = (_star: number): void => {
+        setReviewStar(_star)
     }
 
     const uploadReview = async () => {
         if(!portfolio || !session) return
 
-        const newReview = {
+        const star_sum = portfolio.review.reduce<number>((prev: number,curr:Review) => {
+            return prev + curr.star
+        }, 0)
+        const review_avg = Math.floor(((star_sum + reviewStar )/ portfolio.review.length)*10)/10
+
+        const reviewBody = {
             username: session.user?.name,
             text: reviewText,
-            star: reviewStar
+            star: reviewStar,
+            review_avg
         }   
 
         const options = {
@@ -70,7 +75,7 @@ const UploadReview = ({ portfolio }: Props) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newReview)
+            body: JSON.stringify(reviewBody)
         }
 
         await fetch(`${baseUrl}/review/${portfolio._id}`, options)
@@ -93,6 +98,14 @@ const UploadReview = ({ portfolio }: Props) => {
                             style={{ width: '150px', height: 'auto', display: 'block' }}
                         />
                         <p>レビュー内容</p>
+                        <div>
+                            星<p>{reviewStar}</p>
+                            <div onClick={() => selectStar(1)}>1</div>
+                            <div onClick={() => selectStar(2)}>2</div>
+                            <div onClick={() => selectStar(3)}>3</div>
+                            <div onClick={() => selectStar(4)}>4</div>
+                            <div onClick={() => selectStar(5)}>5</div>
+                        </div>
                         <TextareaField
                             field_height={200}
                             field_width={300}

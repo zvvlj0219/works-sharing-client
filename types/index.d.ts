@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose"
+import { Date, ObjectId } from "mongoose"
 
 export type BucketFile = {
     chunkSize: number
@@ -38,10 +38,12 @@ type Portfolio = {
     review_avg: number
     like: number
     dislike: number
+    // createdAt: Date
+    // updatedAt: Date
 }
 
 type Review = {
-    _id: ObjectId
+    createdAt: string
     username: string
     star: number
     text: string

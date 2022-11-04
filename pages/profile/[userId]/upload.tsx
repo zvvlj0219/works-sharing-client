@@ -1,9 +1,8 @@
 import Layout from '@components/Layout'
-import { signIn, getProviders, getSession, getCsrfToken } from "next-auth/react";
 import type { GetServerSidePropsContext} from 'next'
-import ProfileScreen from '../../../components/porfile/ProfileScreen'
 import type { Portfolio, UploadFile } from '../../../types';
-
+import { getSession } from "next-auth/react";
+import ProfileScreen from '@components/porfile/ProfileScreen'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useEffect, useRef, useState, useCallback } from 'react'
@@ -208,17 +207,22 @@ const UploadPortfolio = () => {
                                                     <p>preview</p>
                                                     {
                                                         previewSrc ? (
-                                                            <div className='preview_image_lists'>
-                                                                <div>
-                                                                    <img
-                                                                        src={String(previewSrc.url)} alt=''
-                                                                        style={{
-                                                                            display:'black',
-                                                                            width: '100px'
-                                                                        }}
-                                                                    />
+                                                            <>
+                                                                <div className='preview_image_lists'>
+                                                                    <div>
+                                                                        <img
+                                                                            src={String(previewSrc.url)} alt=''
+                                                                            style={{
+                                                                                display:'black',
+                                                                                width: '100px'
+                                                                            }}
+                                                                        />
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                                <div>
+                                                                    <p onClick={() => cancelPreviewImage()}>cancel</p>
+                                                                </div>
+                                                            </>
                                                         ) : (
                                                             <div 
                                                             >

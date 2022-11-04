@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './profileScreen.module.css'
 import { useRouter } from 'next/router'
-import { useSession, signOut, getSession  } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 
 type ProfileProps = {
@@ -10,7 +10,7 @@ type ProfileProps = {
 }
 
 const ProfileScreen = ({ use_image_url, username }: ProfileProps) => {
-    const { data: session, status } = useSession()
+    const { data: session} = useSession()
 
     const Router = useRouter()
     const [isProfile, setIsProfile] = useState<boolean>(true)

@@ -1,12 +1,16 @@
-import mongoose from 'mongoose'
+import mongoose, {ObjectId} from 'mongoose'
 
-// ConnectionStates {
-//     disconnected: 0,
-//     connected: 1,
-//     connecting: 2,
-//     disconnecting: 3,
-//     uninitialized: 99,
-// }
+
+/*
+* mongodb コネクションステータス
+* ConnectionStates {
+*     disconnected: 0,
+*     connected: 1,
+*     connecting: 2,
+*     disconnecting: 3,
+*     uninitialized: 99,
+* }
+*/
 
 interface Connection {
     isConnected: number
@@ -65,7 +69,7 @@ class DB {
         }
     }
 
-    convertDocToObj(doc: any) {
+    convertDocToObj(doc:any) {
         doc._id = doc._id.toString()
         doc.createdAt = doc.createdAt.toString()
         doc.updatedAt = doc.updatedAt.toString()
