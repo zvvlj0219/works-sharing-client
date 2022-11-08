@@ -1,5 +1,5 @@
-import type { GetServerSidePropsContext} from 'next'
-import { useEffect } from 'react'
+import type { GetServerSidePropsContext } from 'next'
+import { useEffect, useState } from 'react'
 import { ObjectId } from 'mongoose'
 import { useRouter } from 'next/router'
 import { useSession, getSession } from 'next-auth/react'
@@ -9,7 +9,7 @@ import portfolioSchema from '@models/Portfoilo'
 import type { Portfolio } from '../../../types'
 import { getImageBinaryData } from '@helpers/getImageBinaryData'
 import PortfolioContainer from '@components/portfolio/Portfolio'
-import db from '@config/db';
+import db from '@config/db'
 
 interface Image {
     _id: ObjectId
@@ -17,21 +17,21 @@ interface Image {
 }
 
 type Props = {
-    portfolioList : (Portfolio & Image)[]
+    portfolioList: (Portfolio & Image)[]
 }
 
-
-const UserProfile = ({
-    portfolioList
-}: Props) => {
+const UserProfile = ({ portfolioList }: Props) => {
     const { data: session, status } = useSession()
     const Router = useRouter()
+    const [currentPath, setCurrenPath] = useState<'user' | 'upload'>('user')
 
     useEffect(() => {
-        if(!session && status !== 'loading') {
+        if (!session && status !== 'loading') {
             Router.push('/auth/login')
         }
-    }, [session])
+        const path = Router.pathname.split('/')[3] as 'user' | 'upload'
+        setCurrenPath(path)
+    }, [session, status, Router])
 
     const onClickhandler = (_id: ObjectId) => {
         Router.push(`/works/${_id}/detail`)
@@ -40,71 +40,75 @@ const UserProfile = ({
     return (
         <Layout>
             this is UserProfile
-            {
-                session && (
-                    <>
+            {session && (
+                <>
+                    {session.user?.name && session.user?.image ? (
                         <ProfileScreen
-                            username={session?.user?.name!}
-                            use_image_url={session.user?.image!}
+                            username={session.user.name}
+                            use_image_url={session.user.image}
+                            path={currentPath}
                         />
-                        <div className='section portfolio_list'>
+                    ) : (
+                        <div>falid to load</div>
+                    )}
+                    <div className="section portfolio_list">
                         {portfolioList.map((portfolio) => (
                             <div
                                 onClick={() => onClickhandler(portfolio._id)}
                                 key={String(portfolio._id)}
-                                className='portfolio_wrapper root'
+                                className="portfolio_wrapper root"
                             >
                                 <PortfolioContainer
                                     _id={portfolio._id}
-                                    image_preview_url={portfolio.image_preview_url} 
+                                    image_preview_url={
+                                        portfolio.image_preview_url
+                                    }
                                     username={portfolio.username}
                                     work_name={portfolio.work_name}
                                     review_avg={portfolio.review_avg}
                                 />
-                        </div>
-                ))}
-            </div>
-
-                    </>
-                )
-            }
-
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </Layout>
     )
 }
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps = async (
+    context: GetServerSidePropsContext
+) => {
     const { req } = context
-    const session = await getSession({ req });
+    const session = await getSession({ req })
 
     if (!session) {
         return {
-            redirect: { 
-                destination: "/auth/login"
-            },
-        };
+            redirect: {
+                destination: '/auth/login'
+            }
+        }
     }
 
     const username = session.user?.name
 
-    if(!username){
+    if (!username) {
         return {
-            redirect: { 
-                destination: "/auth/login"
+            redirect: {
+                destination: '/auth/login'
             }
         }
     }
-    
+
     await db.connect()
 
     const portfolioDocuments = await portfolioSchema.find({ username }).lean()
 
     const convertedPortfolios = portfolioDocuments
-        ? (portfolioDocuments.map((doc: Portfolio) => {
-              return db.convertDocToObj(doc)
+        ? (portfolioDocuments.map((doc) => {
+              return db.convertDocToObj<Portfolio>(doc)
           }) as Portfolio[])
         : []
-
 
     const mapResult = convertedPortfolios.map((work: Portfolio) => {
         return getImageBinaryData(work.image.name, work._id)
@@ -116,7 +120,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
 
     const imageUrlArray = await getImageUrl()
-    
+
     await db.disconnect()
 
     const portfolioList = convertedPortfolios.map((portfolio: Portfolio) => {
@@ -124,7 +128,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
             if (portfolio._id === image._id) return image
         })
 
-        if(!imageObj){
+        if (!imageObj) {
             return {
                 ...portfolio,
                 image_preview_url: undefined
@@ -143,6 +147,5 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         }
     }
 }
-
 
 export default UserProfile

@@ -1,16 +1,15 @@
-import { signIn, getProviders } from "next-auth/react";
-import Layout from "@components/Layout";
-import { client_baseUrl} from '@config/index'
-
+import { signIn, getProviders } from 'next-auth/react'
+import Layout from '@components/Layout'
+import { client_baseUrl } from '@config/index'
 
 type Providers = {
     providers: {
         [key: string]: {
-            id: string ,
-            name: string ,
-            type: string ,
-            signinUrl: string ,
-            callbackUrl: string 
+            id: string
+            name: string
+            type: string
+            signinUrl: string
+            callbackUrl: string
         }
     }
 }
@@ -24,25 +23,25 @@ const Login = ({ providers }: Providers) => {
 
     return (
         <Layout>
-            <div style={{width: '30%', margin: '0 auto'}}>
+            <div style={{ width: '30%', margin: '0 auto' }}>
                 {Object.values(providers).map((provider) => {
                     return (
-                    <div key={provider.name} style={{fontSize: '5rem'}}>
-                        <button
-                            onClick={() => onClick(provider.id)}
-                            style={{
-                                color: 'black',
-                                padding: '2rem 4rem',
-                                width: '300px',
-                                margin: '4rem',
-                                fontSize: '1.5rem',
-                                display: 'block',
-                            }}
-                        >
-                        Sign in with {provider.name}
-                        </button>
-                    </div>
-                    );
+                        <div key={provider.name} style={{ fontSize: '5rem' }}>
+                            <button
+                                onClick={() => onClick(provider.id)}
+                                style={{
+                                    color: 'black',
+                                    padding: '2rem 4rem',
+                                    width: '300px',
+                                    margin: '4rem',
+                                    fontSize: '1.5rem',
+                                    display: 'block'
+                                }}
+                            >
+                                Sign in with {provider.name}
+                            </button>
+                        </div>
+                    )
                 })}
             </div>
         </Layout>
@@ -56,7 +55,7 @@ export const getServerSideProps = async () => {
         props: {
             providers
         }
-    };
+    }
 }
 
 export default Login

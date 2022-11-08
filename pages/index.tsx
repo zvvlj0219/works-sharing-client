@@ -24,16 +24,16 @@ const Home = ({ portfolioList }: Props) => {
 
     return (
         <Layout>
-            <div className='section portfolio_list'>
+            <div className="section portfolio_list">
                 {portfolioList.map((portfolio) => (
                     <div
                         onClick={() => onClickhandler(portfolio._id)}
                         key={String(portfolio._id)}
-                        className='portfolio_wrapper root'
+                        className="portfolio_wrapper root"
                     >
                         <PortfolioContainer
                             _id={portfolio._id}
-                            image_preview_url={portfolio.image_preview_url} 
+                            image_preview_url={portfolio.image_preview_url}
                             username={portfolio.username}
                             work_name={portfolio.work_name}
                             review_avg={portfolio.review_avg}
@@ -50,13 +50,7 @@ export const getStaticProps = async () => {
 
     const portfolioDocuments = await getPortfolios()
 
-    const convertedPortfolios = portfolioDocuments
-        ? (portfolioDocuments.map((doc: Portfolio) => {
-              return db.convertDocToObj(doc)
-          }) as Portfolio[])
-        : []
-
-    const mapResult = convertedPortfolios.map((work: Portfolio) => {
+    const mapResult = portfolioDocuments.map((work: Portfolio) => {
         return getImageBinaryData(work.image.name, work._id)
     })
 
@@ -69,12 +63,12 @@ export const getStaticProps = async () => {
 
     await db.disconnect()
 
-    const portfolioList = convertedPortfolios.map((portfolio: Portfolio) => {
+    const portfolioList = portfolioDocuments.map((portfolio: Portfolio) => {
         const imageObj = imageUrlArray.find((image: Image) => {
             if (portfolio._id === image._id) return image
         })
 
-        if(!imageObj){
+        if (!imageObj) {
             return {
                 ...portfolio,
                 image_preview_url: undefined

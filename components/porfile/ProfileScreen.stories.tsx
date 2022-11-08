@@ -1,11 +1,11 @@
-import ProfileScreen from "./ProfileScreen";
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library'
-import girl from '../../public/images/otaku_girl.png'
+import ProfileScreen from './ProfileScreen'
+import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { within, fireEvent } from '@storybook/testing-library'
+import { expect } from '@storybook/jest'
 
 export default {
     title: 'profileScreen_container',
-    components: ProfileScreen,
+    components: ProfileScreen
 } as ComponentMeta<typeof ProfileScreen>
 
 const Template: ComponentStory<typeof ProfileScreen> = (args) => {
@@ -13,14 +13,28 @@ const Template: ComponentStory<typeof ProfileScreen> = (args) => {
 }
 
 export const Primary = Template.bind({})
-Primary.args = {
-    use_image_url: String(girl),
-    username: 'John Doe',
+Primary.parameters = {
+    nextRouter: {
+        path: 'profile/[userId]/user',
+        asPath: 'profile/sample_userId/user',
+        query: {
+            userId: 'sample_userId'
+        }
+    }
 }
-Primary.play = async ({}) => {
-    const profile_button = screen.getByRole('tab_profile')
-    await userEvent.click(profile_button)
+Primary.args = {
+    use_image_url: '/images/otaku_girl.png',
+    username: 'John Doe',
+    path: 'user'
+}
+Primary.play = async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
 
-    const upload_button = screen.getByRole('tab_upload')
-    await userEvent.click(upload_button)
+    const profile_button = canvas.getByRole('tab_profile')
+    expect(profile_button).toBeInTheDocument()
+    await fireEvent.click(profile_button)
+
+    const upload_button = canvas.getByRole('tab_upload')
+    expect(upload_button).toBeInTheDocument()
+    await fireEvent.click(upload_button)
 }

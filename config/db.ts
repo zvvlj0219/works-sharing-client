@@ -1,5 +1,4 @@
-import mongoose, {ObjectId} from 'mongoose'
-
+import mongoose from 'mongoose'
 
 /*
 * mongodb コネクションステータス
@@ -15,6 +14,12 @@ import mongoose, {ObjectId} from 'mongoose'
 interface Connection {
     isConnected: number
 }
+
+type LEAN_DOCUMENT<T> = mongoose.LeanDocument<T & mongoose.Document & Required<{
+    _id: mongoose.Schema.Types.ObjectId
+    createdAt: mongoose.Schema.Types.Date
+    updatedAt: mongoose.Schema.Types.Date
+}>>
 
 class DB {
     private connection: Connection
@@ -69,11 +74,19 @@ class DB {
         }
     }
 
-    convertDocToObj(doc:any) {
-        doc._id = doc._id.toString()
-        doc.createdAt = doc.createdAt.toString()
-        doc.updatedAt = doc.updatedAt.toString()
-        return doc
+    convertDocToObj = <T>(
+        leanDocument: LEAN_DOCUMENT<T>
+    ) => {
+        const _id = leanDocument._id.toString() as string
+        const createdAt = leanDocument.createdAt.toString()
+        const updatedAt = leanDocument.updatedAt.toString()
+
+        return {
+            ...leanDocument,
+            _id,
+            createdAt,
+            updatedAt
+        }
     }
 }
 

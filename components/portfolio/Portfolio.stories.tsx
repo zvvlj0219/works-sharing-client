@@ -1,10 +1,10 @@
-import PortfolioContainer from "./Portfolio";
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import PortfolioContainer from './Portfolio'
+import { ComponentStory, ComponentMeta } from '@storybook/react'
 import girl from '../../public/images/otaku_girl.png'
 
 export default {
     title: 'portfolio_container',
-    components: PortfolioContainer,
+    components: PortfolioContainer
 } as ComponentMeta<typeof PortfolioContainer>
 
 const Template: ComponentStory<typeof PortfolioContainer> = (args) => {

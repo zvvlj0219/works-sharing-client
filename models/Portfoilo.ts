@@ -1,4 +1,4 @@
-import mongoose, { models, ObjectId } from 'mongoose'
+import mongoose, { models, ObjectId, Date } from 'mongoose'
 import type { Review } from '../types'
 
 interface PortfolioDoc extends mongoose.Document {
@@ -14,6 +14,8 @@ interface PortfolioDoc extends mongoose.Document {
     review_avg: number;
     like: number;
     dislike: number
+    createdAt: Date
+    updatedAt: Date
 }
 
 interface PortfolioModel extends mongoose.Model<PortfolioDoc> {}
