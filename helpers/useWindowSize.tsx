@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 interface Window {
-    width: number | undefined,
+    width: number | undefined
     height: number | undefined
 }
 

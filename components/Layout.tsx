@@ -25,8 +25,7 @@ const Layout = ({ children }: Props) => {
                 <div>{children}</div>
             </main>
 
-            <footer className={styles.footer}>jjjj
-            </footer>
+            <footer className={styles.footer}>jjjj</footer>
         </div>
     )
 }

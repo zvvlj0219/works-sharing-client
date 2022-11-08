@@ -1,19 +1,22 @@
-import { getBreakpoint } from "./getBreakPoint"
+import { getBreakpoint } from './getBreakPoint'
 
 const resizeSmallIcon = (num1: number, num2: number, num3: number): number => {
     const bp = getBreakpoint()
 
-    if (bp === 'xl' || "large") {
-        return num1
+    switch (bp) {
+        case 'xl' || 'large':
+            return num3
+            break
+        case 'medium' || 'small':
+            return num2
+            break
+        case 'xxs' || 'xs':
+            return num1
+            break
+        default:
+            return num2
+            break
     }
-    if (bp === 'medium' || "small") {
-        return num2
-    }
-    if (bp === 'xxs' || "xs") {
-        return num3
-    }
-
-    return num2
 }
 
 export const useResizeIcon = () => {
