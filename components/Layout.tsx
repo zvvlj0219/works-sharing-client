@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/home.module.scss'
 import Header from './header/Header'
 
 type Props = {
@@ -18,14 +18,11 @@ const Layout = ({ children }: Props) => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
             <Header />
-
-            <main>
-                <div>{children}</div>
-            </main>
-
-            <footer className={styles.footer}>jjjj</footer>
+            <main>{children}</main>
+            <footer className={styles.footer}>
+                <p>@Works-Sharing</p>
+            </footer>
         </div>
     )
 }

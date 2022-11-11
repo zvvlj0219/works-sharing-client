@@ -5,7 +5,7 @@
 }
 
 .profileScreen_user_container {
-    width: 100%;
+    width: 90%;
     display: flex;
     padding: 15px 0;
     margin-left: 1rem;
@@ -64,7 +64,7 @@
 
 @media (min-width: 900px) {
     .profileScreen_user_container {
-        width: 900px;
+        width: 90%;
         display: flex;
         padding: 15px 0;
         margin-left: 1rem;
@@ -83,7 +83,7 @@
     }
 
     .profileScreen_user_container {
-        width: 100%;
+        width: 90%;
         display: flex;
         padding: 15px 0;
         margin-left: 5%;
@@ -142,7 +142,8 @@
     }
 
     .profileScreen_user_container {
-        margin-left: 5%;
+        margin-left: 0;
+        width: 90%;
     }
     .profileScreen_image_core {
         background-color: whitesmoke;
@@ -186,6 +187,7 @@
     }
     .profileScreen_user_container {
         margin-left: 0;
+        width: 90%;
     }
 
     .profileScreen_image_wrapper {

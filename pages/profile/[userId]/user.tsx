@@ -10,6 +10,7 @@ import type { Portfolio } from '../../../types'
 import { getImageBinaryData } from '@helpers/getImageBinaryData'
 import PortfolioContainer from '@components/portfolio/Portfolio'
 import db from '@config/db'
+import styles from '@styles/home.module.scss'
 
 interface Image {
     _id: ObjectId
@@ -39,7 +40,6 @@ const UserProfile = ({ portfolioList }: Props) => {
 
     return (
         <Layout>
-            this is UserProfile
             {session && (
                 <>
                     {session.user?.name && session.user?.image ? (
@@ -51,12 +51,12 @@ const UserProfile = ({ portfolioList }: Props) => {
                     ) : (
                         <div>falid to load</div>
                     )}
-                    <div className="section portfolio_list">
+                    <div className={styles.section_portfolio_list}>
                         {portfolioList.map((portfolio) => (
                             <div
                                 onClick={() => onClickhandler(portfolio._id)}
                                 key={String(portfolio._id)}
-                                className="portfolio_wrapper root"
+                                className={styles.portfolio_wrapper_root}
                             >
                                 <PortfolioContainer
                                     _id={portfolio._id}

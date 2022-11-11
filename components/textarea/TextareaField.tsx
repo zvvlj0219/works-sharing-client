@@ -1,13 +1,17 @@
 import React from 'react'
 
 type TextareaProps = {
-    field_width: number
-    field_height: number
+    id?: string
+    className?: string
+    field_width?: number
+    field_height?: number
     value: string
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const TextareaField = ({
+    id,
+    className,
     field_width,
     field_height,
     value,
@@ -18,20 +22,20 @@ const TextareaField = ({
     }
 
     return (
-        <div className="textareaField_container">
-            <textarea
-                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    onChangeHandler(event)
-                }}
-                role="textarea_field"
-                style={{
-                    width: `${field_width}px`,
-                    height: `${field_height}px`,
-                    resize: 'none'
-                }}
-                value={value}
-            />
-        </div>
+        <textarea
+            className={`textareaField_container ${className}`}
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                onChangeHandler(event)
+            }}
+            id={id}
+            role="textarea_field"
+            style={{
+                width: `${field_width}px`,
+                height: `${field_height}px`,
+                resize: 'none'
+            }}
+            value={value}
+        />
     )
 }
 
