@@ -106,9 +106,12 @@
     height: 30px;
     margin: -10px 10px 0 auto;
     cursor: pointer;
+    z-index: 10;
+    position: relative;
 }
 
 .header_auth_control ul {
+    position: absolute;
     border: 1px solid black;
     background-color: aliceblue;
     padding: 0;

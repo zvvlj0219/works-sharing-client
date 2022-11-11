@@ -1,5 +1,6 @@
 import Layout from '@components/Layout'
 import type { GetServerSidePropsContext } from 'next'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import type { Portfolio, UploadFile } from '../../../types'
 import { getSession } from 'next-auth/react'
 import ProfileScreen from '@components/porfile/ProfileScreen'
@@ -9,6 +10,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import TextareaField from '@components/textarea/TextareaField'
 import { baseUrl } from '@config/index'
+import styles from '@styles/upload.module.scss'
 
 interface Image {
     id: string
@@ -70,11 +72,6 @@ const UploadPortfolio = () => {
             id: FileObject.name,
             file: FileObject
         })
-    }
-
-    const cancelPreviewImage = () => {
-        setIsPreviewActive(false)
-        setPreviewSrc(null)
     }
 
     const onChangeURLHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,7 +140,7 @@ const UploadPortfolio = () => {
             result_image: UploadFile
         }
 
-        if (session?.user?.name) throw new Error('not found user')
+        if (!session?.user?.name) throw new Error('not found user')
         // ポートフォリオドキュメントを作成する
         const portfolioData: PostBody = {
             image: {
@@ -170,7 +167,7 @@ const UploadPortfolio = () => {
             result: Portfolio
         }
 
-        console.log(result)
+        if (result) Router.push(`/profile/${session.user.name}/user`)
     }
 
     useEffect(() => {
@@ -183,9 +180,8 @@ const UploadPortfolio = () => {
 
     return (
         <Layout>
-            this is UploadPortfolio
             {session && (
-                <div>
+                <div className={styles.section_upload_portfolio}>
                     {session.user?.name && session.user?.image && (
                         <ProfileScreen
                             username={session.user.name}
@@ -193,108 +189,94 @@ const UploadPortfolio = () => {
                             path={currentPath}
                         />
                     )}
-                    <div>
-                        <div className="upload_image_form_container">
-                            <div>
-                                <form
-                                    className="select_image"
-                                    encType="multipart/form-data"
-                                >
-                                    {!isPreviewActive && (
-                                        <label htmlFor="upload-image-id">
-                                            select images
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                name="upload-image-name"
-                                                id="upload-image-id"
-                                                ref={fileInputElement}
-                                                onChange={(
-                                                    event: React.ChangeEvent<HTMLInputElement>
-                                                ) => selectImageHandler(event)}
+                    <div className={styles.form_root}>
+                        <div className={styles.upload_image_form_container}>
+                            <form
+                                className="select_image"
+                                encType="multipart/form-data"
+                            >
+                                <div className="preview_image_container">
+                                    <div className={styles.preview_image_core}>
+                                        {previewSrc ? (
+                                            <Image
+                                                src={String(previewSrc.url)}
+                                                alt={String(previewSrc.url)}
+                                                width={200}
+                                                height={200}
                                             />
-                                        </label>
-                                    )}
-                                    {previewSrc && isPreviewActive && (
-                                        <div className="preview_image_container">
-                                            <p>preview</p>
-                                            {previewSrc ? (
-                                                <>
-                                                    <div className="preview_image_lists">
-                                                        <div>
-                                                            <Image
-                                                                src={String(
-                                                                    previewSrc.url
-                                                                )}
-                                                                alt=""
-                                                                style={{
-                                                                    display:
-                                                                        'black',
-                                                                    width: '100px'
-                                                                }}
-                                                                width={100}
-                                                                height={100}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <p
-                                                            onClick={() =>
-                                                                cancelPreviewImage()
-                                                            }
-                                                        >
-                                                            cancel
-                                                        </p>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <div>
-                                                    <p>
-                                                        faild to preview image
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </form>
+                                        ) : (
+                                            <PhotoCameraIcon
+                                                sx={{
+                                                    fontSize: 100,
+                                                    display: 'block',
+                                                    color: 'lightgray'
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                                <label htmlFor="upload-image-id">
+                                    <p>画像を選択してください</p>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        name="upload-image-name"
+                                        id="upload-image-id"
+                                        ref={fileInputElement}
+                                        onChange={(
+                                            event: React.ChangeEvent<HTMLInputElement>
+                                        ) => selectImageHandler(event)}
+                                    />
+                                </label>
+                            </form>
+                        </div>
+                        <div className={styles.input_form_wrapper}>
+                            <div className={styles.workname_container}>
+                                <label htmlFor="workname_text_id">
+                                    ポートフォリオ名:
+                                </label>
+                                <input
+                                    type="text"
+                                    id="workname_text_id"
+                                    value={worknameField}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => onChangeworknameHandler(event)}
+                                />
+                            </div>
+                            <div className={styles.work_url_container}>
+                                <label htmlFor="workurl_text_id">
+                                    ポートフォリオURL:
+                                </label>
+                                <input
+                                    type="text"
+                                    id="workurl_text_id"
+                                    value={urlField}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => onChangeURLHandler(event)}
+                                />
+                            </div>
+                            <div className={styles.description_container}>
+                                <label htmlFor="description_text_id">
+                                    概要説明:
+                                </label>
+                                <TextareaField
+                                    id="description_text_id"
+                                    value={describeText}
+                                    onChange={onChangeDescribeHandler}
+                                    className={styles.textarea_field_style}
+                                />
                             </div>
                         </div>
-                    </div>
-                    <hr />
-                    <div className="url container">
-                        <p>ここに作品名</p>
-                        <input
-                            type="text"
-                            value={worknameField}
-                            onChange={(
-                                event: React.ChangeEvent<HTMLInputElement>
-                            ) => onChangeworknameHandler(event)}
-                        />
-                    </div>
-                    <div className="url container">
-                        <p>ここにurl</p>
-                        <input
-                            type="text"
-                            value={urlField}
-                            onChange={(
-                                event: React.ChangeEvent<HTMLInputElement>
-                            ) => onChangeURLHandler(event)}
-                        />
-                    </div>
-                    <div>
-                        <p>ここに概要</p>
-                        <TextareaField
-                            field_width={200}
-                            field_height={100}
-                            value={describeText}
-                            onChange={onChangeDescribeHandler}
-                        />
-                    </div>
-                    <div>
-                        <p>upload button</p>
-                        <button type="button" onClick={() => uploadPortfolio()}>
-                            アップロード
-                        </button>
+                        <div className={styles.uploadbutton_container}>
+                            <button
+                                type="button"
+                                onClick={() => uploadPortfolio()}
+                            >
+                                アップロード
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

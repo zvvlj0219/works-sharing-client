@@ -17,9 +17,10 @@
     "paths": {
       "@components/*": ["./components/*"],
       "@models/*": ["./models/*"],
-      "@types/*": ["./types/*"],
       "@config/*": ["./config/*"],
-      "@helpers/*": ["./helpers/*"]
+      "@helpers/*": ["./helpers/*"],
+      "@styles/*": ["./styles/*"],
+      "@types/*": ["./types/*"],
     },
     "resolveJsonModule": true,
     "isolatedModules": true,

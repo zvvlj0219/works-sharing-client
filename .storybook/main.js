@@ -1,7 +1,10 @@
 const path = require('path')
 
 module.exports = {
-  "stories": ['../components/**/*.stories.@(js|jsx|ts|tsx)'],
+  "stories": [
+    '../components/**/*.stories.@(js|jsx|ts|tsx)',
+    // '../stories/*.stories.@(js|jsx|ts|tsx)'
+  ],
   "staticDirs": ["../public"],
   "addons": [
     "@storybook/addon-links",
@@ -11,6 +14,7 @@ module.exports = {
   ],
   // setup for sass
   webpackFinal: async (config) => {
+
     config.module.rules.push({
       test: /\.scss$/,
       use: [
