@@ -23,6 +23,7 @@ const PortfolioContainer = (portfolio: PortfolioProps) => {
                         alt="image"
                         className={styles.ptf_image_core}
                         layout="fill"
+                        priority={true}
                     />
                 ) : (
                     <div>

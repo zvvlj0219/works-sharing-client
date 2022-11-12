@@ -36,10 +36,14 @@ type Portfolio = {
     work_name: string
     description: string
     review_avg: number
-    like: number
-    dislike: number
-    // createdAt: Date
-    // updatedAt: Date
+    like: {
+        id: string
+    }[]
+    dislike: {
+        id: string
+    }[]
+    createdAt: Date
+    updatedAt: Date
 }
 
 type Review = {
