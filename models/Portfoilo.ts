@@ -12,8 +12,12 @@ interface PortfolioDoc extends mongoose.Document {
     work_name: string;
     description: string;
     review_avg: number;
-    like: number;
-    dislike: number
+    like: {
+        id: string
+    }[]
+    dislike: {
+        id: string
+    }[]
     createdAt: Date
     updatedAt: Date
 }
@@ -52,10 +56,10 @@ const portfoiloSchema = new mongoose.Schema(
             type: Number,
         },
         like: {
-            type: Number,
+            type: Array,
         },
         dislike: {
-            type: Number,
+            type: Array,
         },
     },
     {

@@ -26,8 +26,12 @@ type Props = {
               work_name: string
               description: string
               review_avg: number
-              like: number
-              dislike: number
+              like: {
+                id: string
+              }[]
+              dislike: {
+                id: string
+              }[]
           }
         | undefined
 }

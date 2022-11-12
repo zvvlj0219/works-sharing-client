@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSession, getSession } from 'next-auth/react'
 import Image from 'next/image'
 import portfolioSchema from '@models/Portfoilo'
 import Layout from '@components/Layout'
@@ -26,29 +27,42 @@ type Props = {
               work_name: string
               description: string
               review_avg: number
-              like: number
-              dislike: number
+              like: {
+                id: string
+              }[]
+              dislike: {
+                id: string
+              }[]
           }
         | undefined
 }
 
 const PortfolioDetail = ({ portfolio }: Props) => {
-    const [_portfolio, setPortfolio] = useState<Props['portfolio']>(portfolio)
-
+    const { data: session, status } = useSession()
     const Router = useRouter()
 
+    const [_portfolio, setPortfolio] = useState<Props['portfolio']>(portfolio)
+
+    console.log(_portfolio)
+
     const pushLikeButton = async () => {
-        if (!portfolio) return
-        const _newLike = {
-            newlikeCount: portfolio.like + 1
+        if (!_portfolio) return
+
+        if (!session && status !== 'loading') {
+            Router.push('/auth/login')
+            return
         }
 
-        const res = await fetch(`${baseUrl}/review/like/${portfolio._id}`, {
+        const newLike = {
+            id: session?.user?.email
+        }
+
+        const res = await fetch(`${baseUrl}/review/like/${_portfolio._id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(_newLike)
+            body: JSON.stringify({newLike})
         })
         const { result } = (await res.json()) as { result: Portfolio }
         if (_portfolio) {
@@ -60,16 +74,22 @@ const PortfolioDetail = ({ portfolio }: Props) => {
     }
 
     const pushDislikeButton = async () => {
-        if (!portfolio) return
-        const _newDislike = {
-            newdislikeCount: portfolio.dislike + 1
+        if (!_portfolio) return
+
+        if (!session && status !== 'loading') {
+            Router.push('/auth/login')
+            return
         }
-        const res = await fetch(`${baseUrl}/review/dislike/${portfolio._id}`, {
+
+        const newDislike = {
+            id: session?.user?.email
+        }
+        const res = await fetch(`${baseUrl}/review/dislike/${_portfolio._id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(_newDislike)
+            body: JSON.stringify({newDislike})
         })
         const { result } = (await res.json()) as { result: Portfolio }
         if (_portfolio) {
@@ -81,8 +101,36 @@ const PortfolioDetail = ({ portfolio }: Props) => {
         console.log(result)
     }
 
+    const checkLike = ():boolean => {
+        if (!_portfolio) return false
+
+        const index = _portfolio.like.findIndex(obj=> {
+           return obj.id === session?.user?.email
+        })
+
+        if(index !== -1){
+            return true
+        } else {
+            return false
+        }
+    }
+
+    const checkDisLike = ():boolean => {
+        if (!_portfolio) return false
+
+        const index = _portfolio.dislike.findIndex(obj=> {
+           return obj.id === session?.user?.email
+        })
+
+        if(index !== -1){
+            return true
+        } else {
+            return false
+        }
+    }
+
     useEffect(() => {
-        if (!portfolio) {
+        if (!_portfolio) {
             Router.push('/404')
         }
     }, [portfolio, Router])
@@ -108,11 +156,13 @@ const PortfolioDetail = ({ portfolio }: Props) => {
                     <div>
                         <p>like dislike</p>
                         <p onClick={() => pushLikeButton()}>
-                            いいね:{_portfolio.like}
+                            いいね:{_portfolio.like.length}
                         </p>
+                        <p  style={{color:'red'}}>{checkLike() && 'いいね！'}</p>
                         <p onClick={() => pushDislikeButton()}>
-                            いまいち:{_portfolio.dislike}
+                            いまいち:{_portfolio.dislike.length}
                         </p>
+                        <p style={{color:'blue'}}>{checkDisLike() && 'いまいち！'}</p>
                     </div>
                     <hr />
                     <Link href={`/works/${String(_portfolio._id)}/review`}>
