@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongoose'
 import styles from './portfolio.module.scss'
 import StarIcon from '@mui/icons-material/Star'
-import { useResizeIcon } from '../../helpers/useResizeIcon'
+import { useResizeIcon } from '@helpers/useResizeIcon'
 import Image from 'next/image'
 
 type PortfolioProps = {

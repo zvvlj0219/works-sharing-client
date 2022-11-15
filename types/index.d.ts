@@ -37,10 +37,10 @@ type Portfolio = {
     description: string
     review_avg: number
     like: {
-        id: string
+        email: string
     }[]
     dislike: {
-        id: string
+        email: string
     }[]
     createdAt: Date
     updatedAt: Date

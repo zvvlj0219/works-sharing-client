@@ -1,0 +1,373 @@
+// 900 600 400 300
+
+.section_detail_page {
+    width:90%;
+    min-height: 700px;
+    margin: 0 auto;
+
+
+    @media (min-width:900px) {
+        width: 850px;
+    }
+    @media (min-width: 400px) and (max-width: 600px) {
+        width:95%;
+    }    
+    @media (max-width: 400px) {
+        width: 95%;
+    }    
+
+    @media (min-height:800px) {
+        min-height: 90vh;
+    }
+
+
+}
+
+.detail_image_container {
+    position: relative;
+    width: 500px;
+    height: 300px;
+    border: 1px solid gray;
+    margin:20px auto 10px;
+
+    @media (min-width: 900px) {
+        width: 500px;
+    }    
+    @media (min-width: 400px) and (max-width: 600px) {
+        width: 350px;
+        height: 250px;
+
+    }    
+    @media (max-width: 400px) {
+        width: 85%;
+        height: 200px;
+    }    
+}
+
+.detail_head_container {
+    display: flex;
+    align-items: center;
+    margin-left: 20%;
+    margin-bottom: 10px;
+
+
+    @media (min-width: 900px) {
+        margin-left: 15%;
+    }    
+    @media (min-width: 600px) and (max-width: 600px) {
+        margin-left: 15%;
+    }    
+    @media (min-width: 400px) and (max-width: 600px) {
+        margin-left: 8%;
+    }    
+    @media (min-width: 300px) and (max-width: 400px) {
+        margin-left: 3%;
+    }    
+    @media (max-width: 300px) {
+        margin-left: 0px;
+        flex-direction: column;
+    }    
+
+}
+
+.user_info_wrapper {
+    margin-right: 50px;
+
+    > .portfolio_name {
+        font-weight: bold;
+        font-size: 1.5rem;
+    
+    }
+    > .username {
+        font-size: 1rem;
+        padding-left: 15px;
+    }
+
+    @media (min-width: 600px) {
+        > .portfolio_name {
+            font-size: 1.5rem;
+        
+        }
+        > .username {
+            font-size: 1rem;
+            padding-left: 15px;
+        }
+    
+    }    
+    @media (min-width: 300px) and (max-width: 600px) {
+        > .portfolio_name {
+            font-size: 1.2rem;
+        
+        }
+        > .username {
+            font-size: 0.9rem;
+            padding-left: 10px;
+        }
+    
+    }    
+    @media (max-width: 300px) {
+        margin-right: 100px;
+
+        > .portfolio_name {
+            font-size: 1.1rem;
+        
+        }
+        > .username {
+            font-size: 0.9rem;
+            padding-left: 10px;
+            padding-bottom: 5px;
+        }
+    }    
+
+}
+.detail_image_core {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.detail_thumb_container {
+    display: flex;
+    height: 35px;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid dimgray;
+    border-radius: 5px;
+
+    > .thumbdown_core {
+        padding: 5px 10px 0 10px;
+    }
+
+    > .detail_thumbup_core {
+        display: flex;
+        width: auto;
+        min-width: 50px;
+        max-width: 100px;
+        height: 35px;
+        border-right: 1px solid dimgray;
+        box-sizing: content-box;
+        padding:0 10px;
+        align-items: center;
+        justify-content: center;
+    
+        > div.like_couunt{
+            padding-left: 5px;
+        }
+    }
+
+    @media (max-width: 300px) {
+        margin-right: 100px;
+    }    
+}
+
+.review_head_container {
+    margin-left: 5%;
+    display: flex;
+    justify-content: space-around;
+    height: 50px;
+    margin-top: 10px;
+
+    @media (min-width: 600px) {
+        margin-left: 5%;
+        height: 50px;
+    }    
+    @media (min-width: 400px) and (max-width: 600px) {
+        margin-left: 3%;
+        height: 45px;
+    }    
+    @media (max-width: 400px) {
+        margin-left: 0;
+        height: 40px;
+    }        
+
+
+    > .review_heading {
+        font-size: 1.3rem;
+        width:200px;
+        text-align: center;
+        line-height: 50px;
+        
+        @media (min-width: 600px) {
+            font-size: 1.1rem;
+            width:180px;
+
+        }    
+        @media (min-width: 400px) and (max-width: 600px) {
+            font-size: 0.9rem;
+            width:150px;
+    
+        }    
+        @media (max-width: 400px) {
+            font-size: 0.7rem;
+            width:130px;
+        }    
+    
+    }
+
+    > .review_link {
+        width: 130px;
+        height: 40px;
+        background-color: lightcyan;
+        margin: auto 0;
+        border-radius: 5px;
+        border: 1px solid lightblue;
+
+        a {
+            width: 130px;
+            height: 40px;
+            display: block;
+            text-align: center;
+            line-height: 40px;
+            font-size: 1rem;
+
+            @media (min-width: 600px) {
+                font-size: 1rem;
+                width:130px;
+    
+            }    
+            @media (min-width: 400px) and (max-width: 600px) {
+                font-size: 0.9rem;
+                width: 120px;
+            }    
+            @media (max-width: 400px) {
+                font-size: 0.7rem;
+                width: 100px;
+            }        
+        }
+
+        @media (min-width: 600px) {
+            margin-right: 100px;
+            width: 130px;
+        }
+        @media (min-width: 400px) and (max-width:600px) {
+            margin-right: 0px;
+            width: 120px;
+        }
+        @media (max-width:400px) {
+            margin-right: 0px;
+            width: 100px;
+        }
+
+    }
+}
+
+.detail_description_container {
+    font-size: 1.1rem;
+    width: 80%;
+    margin: 0 auto;
+
+    > p {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    @media (min-width: 600px) {
+        width: 80%;
+        font-size: 1.1rem;
+        padding: 20px;
+    }    
+    @media (min-width: 400px) and (max-width: 600px) {
+        width: 90%;
+        font-size: 1rem;
+        padding: 20px;
+
+    }    
+    @media (max-width: 400px) {
+        width: 90%;
+        font-size: 0.9rem;
+        padding: 7px 4px;
+
+    }
+
+    > p.url_link {
+        padding-top: 10px;
+        font-weight: normal;
+        > a {
+            text-decoration: underline;
+            color: dodgerblue;
+        }
+    }
+
+
+}
+
+.reviewlist_container {
+    width:80%;
+    margin: 20px auto;
+
+    .review_wrapper {
+        border: 2px solid rgb(255, 166, 0);
+        background-color: rgba(255, 166, 0, 0.1);
+        border-radius: 5px;
+        margin: 20px;
+        padding: 10px;
+
+        @media (min-width: 600px) {
+            margin: 20px;
+        }    
+        @media (min-width: 400px) and (max-width: 600px) {
+            margin: 15px;
+        }    
+        @media (max-width: 400px) {
+            margin: 10px;
+        }    
+    
+    
+
+        .star_icon_group_container {
+            display: flex;
+
+            .star_icon_username {
+                margin-left: 10px;
+                font-size: 0.9rem;
+                color: dimgray;
+            }
+
+            .created_date {
+                margin-left: 10px;
+                font-size: 0.9rem;
+                color: darkgray;
+  
+            }
+
+            @media (max-width: 400px) {
+                flex-direction: column;
+
+                .star_icon_username,
+                .created_date  {
+                    margin-left: 3px;
+                    font-size: 0.8rem;
+                }
+        
+            }    
+
+        }
+    
+        .review_text {
+            font-size: 0.95rem;
+
+            @media (max-width: 400px) {
+                font-size: 0.85rem;
+            }    
+
+        }
+    }
+
+    @media (min-width: 600px) {
+        width: 85%;
+    }    
+    @media (min-width: 400px) and (max-width: 600px) {
+        width: 95%;
+
+    }    
+    @media (max-width: 400px) {
+        width: 95%;
+    }    
+
+
+    p {
+        font-size: 0.9rem;
+        color: dimgray;
+    }
+}
