@@ -1,0 +1,137 @@
+.section_review_page {
+    width:90%;
+    min-height: 650px;
+    margin: 0 auto;
+
+    @media (min-width:900px) {
+        width: 850px;
+    }
+    @media (min-width: 400px) and (max-width: 600px) {
+        width:95%;
+    }    
+    @media (max-width: 400px) {
+        width: 95%;
+    }    
+
+    @media (min-height:800px) {
+        min-height: 80vh;
+    }
+
+
+}
+
+
+.review_image_container {
+    position: relative;
+    width: 450px;
+    height: 270px;
+    border: 1px solid gray;
+    margin:20px auto 10px;
+
+    @media (min-width: 600px) {
+        width: 450px;
+    }    
+    @media (min-width: 400px) and (max-width: 600px) {
+        width: 300px;
+        height: 230px;
+
+    }    
+    @media (max-width: 400px) {
+        width: 85%;
+        height: 180px;
+    }    
+}
+
+.review_image_core {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.review_head_containre {
+    margin:0 auto 15px;
+
+
+    > .workname {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    > .username {
+        font-size: 1.1rem;
+    }
+
+
+
+    @media (min-width: 600px) {
+        width: 450px;
+    }    
+    @media (min-width: 400px) and (max-width: 600px) {
+        width: 300px;
+    }    
+    @media (max-width: 400px) {
+        width: 85%;
+    }    
+}
+
+.review_form_container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .textarea_field {
+        width: 80%;
+        margin: 0 auto;
+        border: 1px solid gray;
+        box-sizing: border-box;
+        border-radius: 5px;
+
+        @media (min-width: 600px) {
+            width: 80%;
+            height: 300px;
+        }    
+        @media (min-width: 400px) and (max-width: 600px) {
+            width: 85%;
+            height: 200px;
+        }    
+        @media (max-width: 400px) {
+            width: 90%;
+            height: 150px;
+        }    
+    }
+
+    .review_star_group {
+        display: flex;
+        justify-content: center;
+        margin: 20px auto;
+    }
+
+    > p {
+        @media (min-width: 600px) {
+            font-size: 1.4rem;
+            margin-left: 100px;
+        }    
+        @media (min-width: 400px) and (max-width: 600px) {
+            font-size: 1.4rem;
+            margin-left: 30px;
+        }    
+        @media (max-width: 400px) {
+            font-size: 1.2rem;
+            margin-left: 25px;
+        }    
+    
+    }
+}
+
+.review_button_container {
+    padding: 20px 30px;
+    text-align: center;
+
+    > button {
+        border-radius: 5px;
+        border: none;
+        background-color: orange;
+        display: block;
+        padding: 10px 20px;
+        margin: 0 auto;
+    }
+}

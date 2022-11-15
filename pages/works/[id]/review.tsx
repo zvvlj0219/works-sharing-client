@@ -6,11 +6,17 @@ import portfolioSchema from '@models/Portfoilo'
 import db from '@config/db'
 import type { Portfolio, Review } from '../../../types'
 import { getImageBinaryData } from '@helpers/getImageBinaryData'
+import { useResizeIcon } from '@helpers/useResizeIcon'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState, useCallback } from 'react'
 import { baseUrl } from '@config/index'
 import TextareaField from '@components/textarea/TextareaField'
 import { useSession, getSession } from 'next-auth/react'
+import EditIcon from '@mui/icons-material/Edit';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
+import { Divider } from '@mui/material'
+import styles from '@styles/review.module.scss'
 
 type Props = {
     portfolio:
@@ -27,20 +33,23 @@ type Props = {
               description: string
               review_avg: number
               like: {
-                id: string
-              }[]
-              dislike: {
-                id: string
-              }[]
-          }
+                email: string
+            }[]
+            dislike: {
+                email: string
+            }[]
+            }
         | undefined
 }
 
 const UploadReview = ({ portfolio }: Props) => {
     const { data: session, status } = useSession()
     const Router = useRouter()
+    const { resizeSmallIcon } = useResizeIcon()
 
     const [reviewStar, setReviewStar] = useState<number>(3)
+    const [reviewText, setReviewText] = useState<string>('')
+    const [hoverStar, setHoverStar] = useState<number>(0)
 
     useEffect(() => {
         if (!portfolio || (!session && status === 'unauthenticated')) {
@@ -70,10 +79,12 @@ const UploadReview = ({ portfolio }: Props) => {
             },
             0
         )
-        const review_avg =
-            Math.floor(
-                ((star_sum + reviewStar) / portfolio.review.length) * 10
-            ) / 10
+        const review_avg = 
+            portfolio.review.length 
+            ? Math.floor(
+                    ((star_sum + reviewStar) / portfolio.review.length) * 10
+                ) / 10
+            : reviewStar
 
         const reviewBody = {
             username: session.user?.name,
@@ -95,46 +106,89 @@ const UploadReview = ({ portfolio }: Props) => {
         Router.push(`/works/${portfolio._id}/detail`)
     }
 
-    const [reviewText, setReviewText] = useState<string>('')
+
+    useEffect(() => {
+        if(!portfolio) Router.push('/404')
+    },[portfolio])
 
     return (
         <Layout>
-            this is UploadReview
-            {portfolio ? (
-                <>
-                    <p>workname {portfolio.work_name}</p>
-                    <Image
-                        src={portfolio.image_preview_url}
-                        alt=""
-                        style={{
-                            width: '150px',
-                            height: 'auto',
-                            display: 'block'
-                        }}
-                        width={150}
-                        height={150}
-                    />
-                    <p>レビュー内容</p>
-                    <div>
-                        星<p>{reviewStar}</p>
-                        <div onClick={() => selectStar(1)}>1</div>
-                        <div onClick={() => selectStar(2)}>2</div>
-                        <div onClick={() => selectStar(3)}>3</div>
-                        <div onClick={() => selectStar(4)}>4</div>
-                        <div onClick={() => selectStar(5)}>5</div>
+            {portfolio && (
+                <div className={styles.section_review_page}>
+                    <div className={styles.review_image_container}>
+                        <Image
+                            src={portfolio.image_preview_url}
+                            className={styles.review_image_core}
+                            alt=""
+                            layout="fill"
+                            priority={true}
+                        />
                     </div>
-                    <TextareaField
-                        field_height={200}
-                        field_width={300}
-                        value={reviewText}
-                        onChange={onChangeHandler}
-                    />
-                    <button type="button" onClick={() => uploadReview()}>
-                        レビューする
-                    </button>
-                </>
-            ) : (
-                <p>読み込めませんでした</p>
+
+                    <div className={styles.review_head_containre}>
+                        <div className={styles.workname}>
+                            {portfolio.work_name}
+                        </div>
+                        <div className={styles.username}>
+                            {portfolio.username}
+                        </div>
+                    </div>
+
+                    <Divider />
+
+                    <div className={styles.review_form_container}>
+                        <p>
+                            <EditIcon
+                                sx={{
+                                    color: 'limegreen',
+                                    fontSize: 27
+                                }}
+                            />
+                            レビュー内容
+                        </p>
+                        <div
+                            onMouseOut={() => setHoverStar(0)}
+                            className={styles.review_star_group}
+                        >
+                            {
+                                Array(1,2,3,4,5).map(num => (
+                                    <div
+                                        onClick={() => selectStar(num)}
+                                        onMouseMove={() => setHoverStar(num)}
+                                        key={num}
+                                    >
+                                    {
+                                        hoverStar < num && reviewStar < num ? (
+                                            <StarBorderIcon
+                                                sx={{
+                                                    color: 'orange',
+                                                    fontSize: resizeSmallIcon(40,50,60)
+                                                }}
+                                            />
+                                        ) : <StarIcon
+                                                sx={{
+                                                    color: 'orange',
+                                                    fontSize: resizeSmallIcon(40,50,60)
+                                                }}
+                                            />
+                                    }
+                                </div>
+    
+                                ))
+                            }
+                        </div>
+                        <TextareaField
+                            className={styles.textarea_field}
+                            value={reviewText}
+                            onChange={onChangeHandler}
+                        />
+                        <div className={styles.review_button_container}>
+                            <button type="button" onClick={() => uploadReview()}>
+                                レビューする
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </Layout>
     )
