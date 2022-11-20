@@ -12,9 +12,9 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { baseUrl } from '@config/index'
 import TextareaField from '@components/textarea/TextareaField'
 import { useSession, getSession } from 'next-auth/react'
-import EditIcon from '@mui/icons-material/Edit';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
+import EditIcon from '@mui/icons-material/Edit'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import StarIcon from '@mui/icons-material/Star'
 import { Divider } from '@mui/material'
 import styles from '@styles/review.module.scss'
 
@@ -33,12 +33,12 @@ type Props = {
               description: string
               review_avg: number
               like: {
-                email: string
-            }[]
-            dislike: {
-                email: string
-            }[]
-            }
+                  email: string
+              }[]
+              dislike: {
+                  email: string
+              }[]
+          }
         | undefined
 }
 
@@ -79,11 +79,10 @@ const UploadReview = ({ portfolio }: Props) => {
             },
             0
         )
-        const review_avg = 
-            portfolio.review.length 
+        const review_avg = portfolio.review.length
             ? Math.floor(
-                    ((star_sum + reviewStar) / portfolio.review.length) * 10
-                ) / 10
+                  ((star_sum + reviewStar) / portfolio.review.length) * 10
+              ) / 10
             : reviewStar
 
         const reviewBody = {
@@ -106,10 +105,9 @@ const UploadReview = ({ portfolio }: Props) => {
         Router.push(`/works/${portfolio._id}/detail`)
     }
 
-
     useEffect(() => {
-        if(!portfolio) Router.push('/404')
-    },[portfolio])
+        if (!portfolio) Router.push('/404')
+    }, [portfolio, Router])
 
     return (
         <Layout>
@@ -150,32 +148,37 @@ const UploadReview = ({ portfolio }: Props) => {
                             onMouseOut={() => setHoverStar(0)}
                             className={styles.review_star_group}
                         >
-                            {
-                                Array(1,2,3,4,5).map(num => (
-                                    <div
-                                        onClick={() => selectStar(num)}
-                                        onMouseMove={() => setHoverStar(num)}
-                                        key={num}
-                                    >
-                                    {
-                                        hoverStar < num && reviewStar < num ? (
-                                            <StarBorderIcon
-                                                sx={{
-                                                    color: 'orange',
-                                                    fontSize: resizeSmallIcon(40,50,60)
-                                                }}
-                                            />
-                                        ) : <StarIcon
-                                                sx={{
-                                                    color: 'orange',
-                                                    fontSize: resizeSmallIcon(40,50,60)
-                                                }}
-                                            />
-                                    }
+                            {[1, 2, 3, 4, 5].map((num) => (
+                                <div
+                                    onClick={() => selectStar(num)}
+                                    onMouseMove={() => setHoverStar(num)}
+                                    key={num}
+                                >
+                                    {hoverStar < num && reviewStar < num ? (
+                                        <StarBorderIcon
+                                            sx={{
+                                                color: 'orange',
+                                                fontSize: resizeSmallIcon(
+                                                    40,
+                                                    50,
+                                                    60
+                                                )
+                                            }}
+                                        />
+                                    ) : (
+                                        <StarIcon
+                                            sx={{
+                                                color: 'orange',
+                                                fontSize: resizeSmallIcon(
+                                                    40,
+                                                    50,
+                                                    60
+                                                )
+                                            }}
+                                        />
+                                    )}
                                 </div>
-    
-                                ))
-                            }
+                            ))}
                         </div>
                         <TextareaField
                             className={styles.textarea_field}
@@ -183,7 +186,10 @@ const UploadReview = ({ portfolio }: Props) => {
                             onChange={onChangeHandler}
                         />
                         <div className={styles.review_button_container}>
-                            <button type="button" onClick={() => uploadReview()}>
+                            <button
+                                type="button"
+                                onClick={() => uploadReview()}
+                            >
                                 レビューする
                             </button>
                         </div>

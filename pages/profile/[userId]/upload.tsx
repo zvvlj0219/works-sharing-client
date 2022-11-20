@@ -182,10 +182,12 @@ const UploadPortfolio = () => {
         <Layout>
             {session && (
                 <div className={styles.section_upload_portfolio}>
-                    {session.user?.name && session.user?.image && (
+                    {session.user?.name && (
                         <ProfileScreen
                             username={session.user.name}
-                            use_image_url={session.user.image}
+                            use_image_url={
+                                session.user?.image ?? '/images/otaku_girl.png'
+                            }
                             path={currentPath}
                         />
                     )}

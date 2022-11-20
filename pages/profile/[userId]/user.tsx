@@ -42,33 +42,41 @@ const UserProfile = ({ portfolioList }: Props) => {
         <Layout>
             {session && (
                 <>
-                    {session.user?.name && session.user?.image ? (
+                    {session.user?.name && (
                         <ProfileScreen
                             username={session.user.name}
-                            use_image_url={session.user.image}
+                            use_image_url={
+                                session.user?.image ?? '/images/otaku_girl.png'
+                            }
                             path={currentPath}
                         />
-                    ) : (
-                        <div>falid to load</div>
                     )}
                     <div className={styles.section_portfolio_list}>
-                        {portfolioList.map((portfolio) => (
-                            <div
-                                onClick={() => onClickhandler(portfolio._id)}
-                                key={String(portfolio._id)}
-                                className={styles.portfolio_wrapper_root}
-                            >
-                                <PortfolioContainer
-                                    _id={portfolio._id}
-                                    image_preview_url={
-                                        portfolio.image_preview_url
+                        {portfolioList.length !== 0 ? (
+                            portfolioList.map((portfolio) => (
+                                <div
+                                    onClick={() =>
+                                        onClickhandler(portfolio._id)
                                     }
-                                    username={portfolio.username}
-                                    work_name={portfolio.work_name}
-                                    review_avg={portfolio.review_avg}
-                                />
-                            </div>
-                        ))}
+                                    key={String(portfolio._id)}
+                                    className={styles.portfolio_wrapper_root}
+                                >
+                                    <PortfolioContainer
+                                        _id={portfolio._id}
+                                        image_preview_url={
+                                            portfolio.image_preview_url
+                                        }
+                                        username={portfolio.username}
+                                        work_name={portfolio.work_name}
+                                        review_avg={portfolio.review_avg}
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <p>
+                                まだポートフォリオがアップロードされていません
+                            </p>
+                        )}
                     </div>
                 </>
             )}
@@ -90,7 +98,7 @@ export const getServerSideProps = async (
         }
     }
 
-    const username = session.user?.name
+    const username = session?.user?.name
 
     if (!username) {
         return {

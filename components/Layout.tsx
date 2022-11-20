@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import Head from 'next/head'
-import styles from '../styles/home.module.scss'
+import styles from '@styles/home.module.scss'
 import Header from './header/Header'
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
     return (
-        <div>
+        <div className={styles.layout_root}>
             <Head>
                 <title>Create Next App</title>
                 <meta
