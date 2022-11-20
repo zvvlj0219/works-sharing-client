@@ -1,17 +1,41 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import type { RedirectParams } from '../../../types/next-auth'
 
 export default NextAuth({
     // Configure one or more authentication providers
     providers: [
-        // GithubProvider({
-        //     clientId: process.env.GITHUB_ID ?? '',
-        //     clientSecret: process.env.GITHUB_SECRET ?? '',
-        // }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID ?? '',
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+        }),
+        CredentialsProvider({
+            name: 'Credential',
+            async authorize(credentials) {
+                const { email } = credentials as {
+                    email: string
+                }
+
+                const user = {
+                    name: 'ゲストユーザー',
+                    email: 'guest@example.com',
+                    id: 'guest_id'
+                }
+
+                if (email !== 'guest@example.com') {
+                    return null
+                }
+
+                return user
+            },
+            credentials: {
+                email: {
+                    label: 'Email',
+                    type: 'text',
+                    placeholder: 'jsmith@com'
+                }
+            }
         })
         // ...add more providers here
     ],
@@ -57,7 +81,7 @@ export default NextAuth({
     pages: {
         signIn: '/auth/login'
     },
-    secret: process.env.SECRET,
+    secret: process.env.NEXT_AUTH_SERECT,
     jwt: {
         // The maximum age of the NextAuth.js issued JWT in seconds.
         // Defaults to `session.maxAge`.
@@ -65,5 +89,8 @@ export default NextAuth({
         // You can define your own encode/decode functions for signing and encryption
         // async encode() {},
         // async decode() {},
+    },
+    session: {
+        strategy: 'jwt'
     }
 })

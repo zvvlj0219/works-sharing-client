@@ -14,36 +14,35 @@ import { formatStringDate } from '@helpers/formatStringDate'
 import { useResizeIcon } from '@helpers/useResizeIcon'
 import type { Review } from '../../../types'
 import { baseUrl } from '@config/index'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import StarIcon from '@mui/icons-material/Star';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
+import ThumbDownIcon from '@mui/icons-material/ThumbDown'
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
+import StarIcon from '@mui/icons-material/Star'
 import styles from '@styles/detail.module.scss'
 import { Divider } from '@mui/material'
 
 type Props = {
-    portfolio?:
-         {
-              image_preview_url: string
-              _id: mongoose.Schema.Types.ObjectId
-              image: {
-                  name: string
-              }
-              username: string
-              review: Review[]
-              work_url: string
-              work_name: string
-              description: string
-              review_avg: number
-              like: {
-                email: string
-              }[]
-              dislike: {
-                email: string
-              }[]
-          }
+    portfolio?: {
+        image_preview_url: string
+        _id: mongoose.Schema.Types.ObjectId
+        image: {
+            name: string
+        }
+        username: string
+        review: Review[]
+        work_url: string
+        work_name: string
+        description: string
+        review_avg: number
+        like: {
+            email: string
+        }[]
+        dislike: {
+            email: string
+        }[]
+    }
 }
 
 const PortfolioDetail = ({ portfolio }: Props) => {
@@ -70,7 +69,7 @@ const PortfolioDetail = ({ portfolio }: Props) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({newLike})
+            body: JSON.stringify({ newLike })
         })
         const { result } = (await res.json()) as { result: Portfolio }
         if (_portfolio) {
@@ -98,7 +97,7 @@ const PortfolioDetail = ({ portfolio }: Props) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({newDislike})
+            body: JSON.stringify({ newDislike })
         })
         const { result } = (await res.json()) as { result: Portfolio }
         if (_portfolio) {
@@ -110,44 +109,44 @@ const PortfolioDetail = ({ portfolio }: Props) => {
         }
     }
 
-    const checkLike = ():boolean => {
+    const checkLike = (): boolean => {
         if (!_portfolio) return false
 
-        const index = _portfolio.like.findIndex(obj=> {
-           return obj.email === session?.user?.email
+        const index = _portfolio.like.findIndex((obj) => {
+            return obj.email === session?.user?.email
         })
 
-        if(index !== -1){
+        if (index !== -1) {
             return true
         } else {
             return false
         }
     }
 
-    const checkDisLike = ():boolean => {
+    const checkDisLike = (): boolean => {
         if (!_portfolio) return false
 
-        const index = _portfolio.dislike.findIndex(obj=> {
-           return obj.email === session?.user?.email
+        const index = _portfolio.dislike.findIndex((obj) => {
+            return obj.email === session?.user?.email
         })
 
-        if(index !== -1){
+        if (index !== -1) {
             return true
         } else {
             return false
         }
     }
 
-    const displayReviewStar = (count:number):JSX.Element => {
+    const displayReviewStar = (count: number): JSX.Element => {
         let StarIconGroup = <></>
-        for(let i=0; i < count; i++) {
+        for (let i = 0; i < count; i++) {
             StarIconGroup = (
                 <>
                     {StarIconGroup}
                     <StarIcon
                         sx={{
                             color: 'darkorange',
-                            fontSize: resizeSmallIcon(10,20,25)
+                            fontSize: resizeSmallIcon(10, 20, 25)
                         }}
                     />
                 </>
@@ -160,7 +159,7 @@ const PortfolioDetail = ({ portfolio }: Props) => {
         if (!_portfolio) {
             Router.push('/404')
         }
-    }, [portfolio, Router])
+    }, [_portfolio, Router])
 
     return (
         <Layout>
@@ -177,41 +176,44 @@ const PortfolioDetail = ({ portfolio }: Props) => {
                     </div>
                     <div className={styles.detail_head_container}>
                         <div className={styles.user_info_wrapper}>
-                            <div className={styles.portfolio_name}>{_portfolio.work_name}</div>
-                            <div className={styles.username}>{_portfolio.username}</div>
+                            <div className={styles.portfolio_name}>
+                                {_portfolio.work_name}
+                            </div>
+                            <div className={styles.username}>
+                                {_portfolio.username}
+                            </div>
                         </div>
                         <div className={styles.detail_thumb_container}>
                             <div
                                 onClick={() => pushLikeButton()}
                                 className={styles.detail_thumbup_core}
                             >
-                                {
-                                    checkLike()
-                                    ? <ThumbUpIcon />
-                                    : <ThumbUpOffAltIcon />
-                                }
-                                
-                                <div
-                                    className={styles.like_couunt}
-                                >{_portfolio.like.length}</div>
+                                {checkLike() ? (
+                                    <ThumbUpIcon />
+                                ) : (
+                                    <ThumbUpOffAltIcon />
+                                )}
+
+                                <div className={styles.like_couunt}>
+                                    {_portfolio.like.length}
+                                </div>
                             </div>
                             <div
                                 className={styles.thumbdown_core}
                                 onClick={() => pushDislikeButton()}
                             >
-                                {
-                                    checkDisLike()
-                                    ? <ThumbDownIcon />
-                                    : <ThumbDownOffAltIcon />
-                                }
-                                
-                                
+                                {checkDisLike() ? (
+                                    <ThumbDownIcon />
+                                ) : (
+                                    <ThumbDownOffAltIcon />
+                                )}
                             </div>
                         </div>
                     </div>
                     <Divider />
                     <div className={styles.detail_description_container}>
-                        <p>概要説明</p><br />
+                        <p>概要説明</p>
+                        <br />
                         {_portfolio.description}
                         <br />
                         <p className={styles.url_link}>
@@ -232,32 +234,45 @@ const PortfolioDetail = ({ portfolio }: Props) => {
                             ユーザーレビュー
                         </div>
                         <div className={styles.review_link}>
-                            <Link href={`/works/${String(_portfolio._id)}/review`}>
+                            <Link
+                                href={`/works/${String(_portfolio._id)}/review`}
+                            >
                                 <a>レビューを書く</a>
                             </Link>
                         </div>
                     </div>
                     <div className={styles.reviewlist_container}>
-                        {
-                            _portfolio.review.length !== 0 ?
+                        {_portfolio.review.length !== 0 ? (
                             _portfolio.review.map((rev: Review) => (
                                 <div
                                     key={String(rev.createdAt)}
                                     className={styles.review_wrapper}
                                 >
-                                    <div className={styles.star_icon_group_container}>
+                                    <div
+                                        className={
+                                            styles.star_icon_group_container
+                                        }
+                                    >
                                         <div>{displayReviewStar(rev.star)}</div>
-                                        <div className={styles.star_icon_username}>
+                                        <div
+                                            className={
+                                                styles.star_icon_username
+                                            }
+                                        >
                                             {rev.username}
                                         </div>
-                                        <div className={styles.created_date}>{formatStringDate(rev.createdAt)}</div>
+                                        <div className={styles.created_date}>
+                                            {formatStringDate(rev.createdAt)}
+                                        </div>
                                     </div>
-                                    <div className={styles.review_text}>{rev.text}</div>
+                                    <div className={styles.review_text}>
+                                        {rev.text}
+                                    </div>
                                 </div>
-                            )) : (
-                                <p>まだレビューがありません</p>
-                            )
-                        }
+                            ))
+                        ) : (
+                            <p>まだレビューがありません</p>
+                        )}
                     </div>
                 </div>
             )}

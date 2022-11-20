@@ -1,0 +1,44 @@
+.container {
+    width: 100%;
+    height: calc(100vh - 140px);
+    margin: 0 auto;
+    background-color: aliceblue;
+
+    .status {
+        text-align: center;
+        padding-top: 2rem;
+
+        div {
+            background: linear-gradient(to right, #00ff7f, #7fffd4, #1e90ff);
+            display: inline-block;
+            text-align: center;
+            margin: 0 auto;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            font-size: 12rem;
+
+            @media (max-width:600px) {
+                font-size: 6rem;
+            }
+        }
+    }
+    .notfound {
+        color:dimgray;
+        text-align: center;
+        font-size: 4rem;
+
+        @media (max-width:600px) {
+            font-size: 3rem;
+        }
+    }
+    .text {
+        color:dimgray;
+        text-align: center;
+        font-size: 1.3rem;
+
+        @media (max-width:600px) {
+            font-size: 1rem;
+        }
+    }
+}

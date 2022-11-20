@@ -1,6 +1,8 @@
 import { signIn, getProviders } from 'next-auth/react'
+import Image from 'next/image'
 import Layout from '@components/Layout'
 import { client_baseUrl } from '@config/index'
+import styles from '@styles/auth.module.scss'
 
 type Providers = {
     providers: {
@@ -15,34 +17,84 @@ type Providers = {
 }
 
 const Login = ({ providers }: Providers) => {
-    const onClick = async (id: string) => {
-        await signIn(id, {
+    const SignInWithGoogle = async () => {
+        await signIn('google', {
+            callbackUrl: client_baseUrl
+        })
+    }
+    const SignInWithCredentials = async () => {
+        await signIn('credentials', {
+            email: 'guest@example.com',
             callbackUrl: client_baseUrl
         })
     }
 
     return (
         <Layout>
-            <div style={{ width: '30%', margin: '0 auto' }}>
-                {Object.values(providers).map((provider) => {
-                    return (
-                        <div key={provider.name} style={{ fontSize: '5rem' }}>
-                            <button
-                                onClick={() => onClick(provider.id)}
-                                style={{
-                                    color: 'black',
-                                    padding: '2rem 4rem',
-                                    width: '300px',
-                                    margin: '4rem',
-                                    fontSize: '1.5rem',
-                                    display: 'block'
-                                }}
-                            >
-                                Sign in with {provider.name}
-                            </button>
-                        </div>
-                    )
-                })}
+            <div className={styles.section_auth_page}>
+                <div className={styles.list_container}>
+                    <p className={styles.navigation}>ログインしてください</p>
+                    <div className={styles.providers_list}>
+                        {Object.values(providers).map((provider) => {
+                            switch (provider.name) {
+                                case 'Google':
+                                    return (
+                                        <div
+                                            key={provider.name}
+                                            className={styles.provider_core}
+                                        >
+                                            <button
+                                                onClick={() =>
+                                                    SignInWithGoogle()
+                                                }
+                                                className={
+                                                    styles.provider_google_button
+                                                }
+                                            >
+                                                <div
+                                                    className={
+                                                        styles.image_wrapper
+                                                    }
+                                                >
+                                                    <Image
+                                                        className={
+                                                            styles.google_logo
+                                                        }
+                                                        src="/images/google.png"
+                                                        alt=""
+                                                        layout="fill"
+                                                    />
+                                                </div>
+                                                <p>{provider.name}でログイン</p>
+                                            </button>
+                                        </div>
+                                    )
+
+                                case 'Credential':
+                                    return (
+                                        <div
+                                            key={provider.name}
+                                            className={styles.provider_core}
+                                        >
+                                            <button
+                                                onClick={() =>
+                                                    SignInWithCredentials()
+                                                }
+                                                className={
+                                                    styles.common_provider_button
+                                                }
+                                            >
+                                                <p>ゲストログイン</p>
+                                            </button>
+                                        </div>
+                                    )
+
+                                default:
+                                    return <></>
+                            }
+                        })}
+                    </div>
+                </div>
             </div>
         </Layout>
     )

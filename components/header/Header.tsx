@@ -12,9 +12,6 @@ const Header = () => {
     const { data: session, status } = useSession()
     const Router = useRouter()
 
-    console.log(session)
-    console.log(status)
-
     const [isAuth, setIsAuht] = useState<boolean>(false)
     const [isShow, setIsShow] = useState<boolean>(false)
     const [drawerState, setDrawerState] = useState<boolean>(false)
