@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongoose'
 import fetch from 'node-fetch'
-import { baseUrl } from '../config'
+import { baseUrl } from '@config/index'
 
 /*
  * 画像をデータベースから取得

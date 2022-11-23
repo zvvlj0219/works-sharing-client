@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { baseUrl } from '../config'
+import { baseUrl } from '@config/index'
 import type { Portfolio } from '../types'
 
 /*
