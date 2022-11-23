@@ -283,6 +283,8 @@ const PortfolioDetail = ({ portfolio }: Props) => {
 export const getServerSideProps = async (
     ctx: GetServerSidePropsContext<{ id: string }>
 ) => {
+    await db.connect()
+
     const { params } = ctx
 
     if (!params) {
@@ -292,8 +294,6 @@ export const getServerSideProps = async (
             }
         }
     }
-
-    await db.connect()
 
     const portfolioDocument = await portfolioSchema.findById(params.id).lean()
 
@@ -313,12 +313,12 @@ export const getServerSideProps = async (
         params.id
     )
 
-    await db.disconnect()
-
     const portfolio = {
         ...convertedPortfolio,
         image_preview_url: imageObj.image_preview_url
     }
+
+    await db.disconnect()
 
     return {
         props: {

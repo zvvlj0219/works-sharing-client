@@ -51,12 +51,13 @@ class DB {
             }
 
             await mongoose.disconnect()
-            console.log('mongoose disconnected')
+            console.log('previous mongoose connection was disconnected')
             this.readyStateLogger()
         }
 
         const db = await mongoose.connect(process.env.MONGODB_URI)
         this.connection.isConnected = db.connections[0].readyState
+        console.log('mongoose connect done successfully')
         this.readyStateLogger()
     }
 

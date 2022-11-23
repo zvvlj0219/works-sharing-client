@@ -55,11 +55,11 @@ const portfoiloSchema = new mongoose.Schema(
         review_avg: {
             type: Number,
         },
-        like: {
-            type: Array,
+        like:  {
+            type: Array
         },
-        dislike: {
-            type: Array,
+        dislike:  {
+            type: Array
         },
     },
     {

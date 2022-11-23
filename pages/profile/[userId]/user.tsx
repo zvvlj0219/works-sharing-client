@@ -87,6 +87,8 @@ const UserProfile = ({ portfolioList }: Props) => {
 export const getServerSideProps = async (
     context: GetServerSidePropsContext
 ) => {
+    await db.connect()
+
     const { req } = context
     const session = await getSession({ req })
 
@@ -108,8 +110,6 @@ export const getServerSideProps = async (
         }
     }
 
-    await db.connect()
-
     const portfolioDocuments = await portfolioSchema.find({ username }).lean()
 
     const convertedPortfolios = portfolioDocuments
@@ -129,8 +129,6 @@ export const getServerSideProps = async (
 
     const imageUrlArray = await getImageUrl()
 
-    await db.disconnect()
-
     const portfolioList = convertedPortfolios.map((portfolio: Portfolio) => {
         const imageObj = imageUrlArray.find((image: Image) => {
             if (portfolio._id === image._id) return image
@@ -148,6 +146,8 @@ export const getServerSideProps = async (
             image_preview_url: imageObj.image_preview_url
         } as Portfolio & Image
     })
+
+    await db.disconnect()
 
     return {
         props: {

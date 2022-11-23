@@ -12,7 +12,7 @@ const nextConfig_prod = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains:[]
+    domains:['works-sharing-server.herokuapp.com','lh3.googleusercontent.com']
   }
 }
 
