@@ -20,7 +20,7 @@ const PortfolioContainer = (portfolio: PortfolioProps) => {
                 {portfolio.image_preview_url ? (
                     <Image
                         src={portfolio.image_preview_url}
-                        alt="image"
+                        alt={portfolio.image_preview_url}
                         className={styles.ptf_image_core}
                         layout="fill"
                         priority={true}

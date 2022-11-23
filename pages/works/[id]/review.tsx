@@ -203,6 +203,8 @@ const UploadReview = ({ portfolio }: Props) => {
 export const getServerSideProps = async (
     ctx: GetServerSidePropsContext<{ id: string }>
 ) => {
+    await db.connect()
+
     const { params, req } = ctx
 
     const session = await getSession({ req })
@@ -223,8 +225,6 @@ export const getServerSideProps = async (
         }
     }
 
-    await db.connect()
-
     const portfolioDocument = await portfolioSchema.findById(params.id).lean()
 
     if (!portfolioDocument)
@@ -243,12 +243,12 @@ export const getServerSideProps = async (
         params.id
     )
 
-    await db.disconnect()
-
     const portfolio = {
         ...convertedPortfolio,
         image_preview_url: imageObj.image_preview_url
     }
+
+    await db.disconnect()
 
     return {
         props: {

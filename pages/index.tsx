@@ -6,15 +6,15 @@ import Layout from '@components/Layout'
 import { getPortfolios } from '@helpers/getPortfolios'
 import { getImageBinaryData } from '@helpers/getImageBinaryData'
 import PortfolioContainer from '@components/portfolio/Portfolio'
-import db from '@config/db'
 import styles from '@styles/home.module.scss'
+import db from '@config/db'
 
 interface Image {
     _id: ObjectId
     image_preview_url?: string
 }
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>
+type Props = InferGetStaticPropsType<typeof getServerSideProps>
 
 const Home = ({ portfolioList }: Props) => {
     const Router = useRouter()
@@ -46,7 +46,7 @@ const Home = ({ portfolioList }: Props) => {
     )
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
     await db.connect()
 
     const portfolioDocuments = await getPortfolios()
@@ -61,8 +61,6 @@ export const getStaticProps = async () => {
     }
 
     const imageUrlArray = await getImageUrl()
-
-    await db.disconnect()
 
     const portfolioList = portfolioDocuments.map((portfolio: Portfolio) => {
         const imageObj = imageUrlArray.find((image: Image) => {
@@ -81,6 +79,8 @@ export const getStaticProps = async () => {
             image_preview_url: imageObj.image_preview_url
         } as Portfolio & Image
     })
+
+    await db.disconnect()
 
     return {
         props: {
