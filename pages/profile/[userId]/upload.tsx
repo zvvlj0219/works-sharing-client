@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import TextareaField from '@components/textarea/TextareaField'
-import { baseUrl } from '@config/index'
+import { baseUrl } from '@config/config'
 import styles from '@styles/upload.module.scss'
 
 interface Image {

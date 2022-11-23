@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongoose'
-import { useResizeIcon } from '@helpers/useResizeIcon'
 import fetch from 'node-fetch'
-import { baseUrl } from '@config/index'
+import { baseUrl } from '@config/config'
 
 /*
  * 画像をデータベースから取得

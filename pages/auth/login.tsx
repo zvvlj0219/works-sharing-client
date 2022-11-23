@@ -1,7 +1,7 @@
 import { signIn, getProviders } from 'next-auth/react'
 import Image from 'next/image'
 import Layout from '@components/Layout'
-import { client_baseUrl } from '@config/index'
+import { client_baseUrl } from '@config/config'
 import styles from '@styles/auth.module.scss'
 
 type Providers = {
